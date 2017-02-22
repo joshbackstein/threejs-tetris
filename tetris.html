@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <title>Josh Backstein - Tetris</title>
+    <style>
+      body { margin: 0; }
+      canvas { width: 100%; height: 100% }
+    </style>
+  </head>
+  <body>
+    <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
+
+    <script src="js/three.min.js"></script>
+    <script>
+      "use strict"
+
+      // Global constants.
+      const ADD_AXIS_HELPER = true;
+      const BLOCK_SIZE = 50;
+      const BLOCK_SPACING = 55;
+      const BOARD_WIDTH = 16;
+      const BOARD_HEIGHT = 16;
+      const BOARD_DEPTH = 16;
+      const CAMERA_Y = 300;
+      const CAMERA_X = 600;
+      const CAMERA_Z = 600;
+
+      // Global variables.
+      var scene, camera, renderer;
+      var geometry, material, mesh;
+      var cameraRot = Math.PI / 4;
+
+      init();
+      animate();
+
+      function init() {
+        // Create the main scene for the 3D drawing
+        scene = new THREE.Scene();
+
+        // Every scene needs a camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.y = CAMERA_Y;
+        camera.position.x = Math.sin(cameraRot) * CAMERA_X;
+        camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        // Add light to the scene.
+        var ambientLight = new THREE.AmbientLight(0xf0f0f0);
+        scene.add(ambientLight);
+        // TODO: Add point lights.
+
+        // Add floor to the scene.
+        var floorGeometry = new THREE.PlaneBufferGeometry(20000, 20000, 8, 8);
+        var floorMaterial = new THREE.MeshPhongMaterial({
+          color: 0x888888,
+          side: THREE.DoubleSide
+        });
+        var floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
+        scene.add(floorMesh);
+        floorMesh.rotateX(Math.PI / 2);
+        floorMesh.rotateZ(Math.PI / 4);
+
+        // Add axis helper to the scene.
+        if (ADD_AXIS_HELPER) {
+          var axisHelper = new THREE.AxisHelper(200);
+          scene.add(axisHelper);
+        }
+
+        // The renderer renders the scene using the objects, lights and camera.
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Attach the threeJS renderer to the HTML page
+        document.body.appendChild(renderer.domElement);
+      }
+
+      // Add block at the provided location.
+      function addBlock(x = 0, y = 0, z = 0, color = 0xffffff) {
+        // Create geometry and material for block.
+        var blockGeometry = new THREE.BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        var blockMaterial = new THREE.MeshBasicMaterial({
+          color: color,
+          wireframe: false
+        });
+
+        // Create mesh for block.
+        var blockMesh = new THREE.Mesh(blockGeometry, blockMaterial);
+
+        // Move it to the provided location.
+        blockMesh.position.set(x, y, z);
+
+        // Add it to the scene.
+        scene.add(blockMesh);
+      }
+
+      // This is the game/animation loop
+      function animate() {
+        // Get an animation frame to render.
+        requestAnimationFrame(animate);
+
+        // Move the camera
+        //cameraRot -= 0.005;
+        camera.position.y = CAMERA_Y;
+        camera.position.x = Math.sin(cameraRot) * CAMERA_X;
+        camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        // Render the scene.
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
+</html>
