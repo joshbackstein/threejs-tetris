@@ -10,24 +10,17 @@
     <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
 
     <script src="js/three.min.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/boards.js"></script>
+    <script src="js/blocks.js"></script>
     <script>
-      "use strict"
-
-      // Global constants.
-      const ADD_AXIS_HELPER = true;
-      const BLOCK_SIZE = 50;
-      const BLOCK_SPACING = 55;
-      const BOARD_WIDTH = 16;
-      const BOARD_HEIGHT = 16;
-      const BOARD_DEPTH = 16;
-      const CAMERA_Y = 300;
-      const CAMERA_X = 600;
-      const CAMERA_Z = 600;
+      "use strict";
 
       // Global variables.
       var scene, camera, renderer;
       var geometry, material, mesh;
       var cameraRot = Math.PI / 4;
+      var board = [];
 
       init();
       animate();
@@ -48,20 +41,48 @@
         scene.add(ambientLight);
         // TODO: Add point lights.
 
-        // Add floor to the scene.
-        var floorGeometry = new THREE.PlaneBufferGeometry(20000, 20000, 8, 8);
-        var floorMaterial = new THREE.MeshPhongMaterial({
-          color: 0x888888,
-          side: THREE.DoubleSide
+        // Add sky box to the scene.
+        var skyBoxGeometry = new THREE.BoxGeometry(5000, 5000, 5000);
+        var skyBoxMaterial = new THREE.MeshBasicMaterial({
+          color: 0x42c0fb,
+          side: THREE.BackSide
         });
-        var floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
-        scene.add(floorMesh);
-        floorMesh.rotateX(Math.PI / 2);
-        floorMesh.rotateZ(Math.PI / 4);
+        var skyBoxMesh = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
+        scene.add(skyBoxMesh);
+
+        if (ADD_FLOOR) {
+          // Add floor of board to the scene.
+          var floorSize = BOARD_SIZE * CUBE_SIZE;
+          var floorGeometry = new THREE.PlaneBufferGeometry(floorSize, floorSize, 1, 1);
+          var floorMaterial = new THREE.MeshPhongMaterial({
+            color: 0x444444,
+            side: THREE.DoubleSide
+          });
+          var floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
+          scene.add(floorMesh);
+          floorMesh.rotateX(Math.PI / 2);
+        }
+
+        // Initialize board, then add it to the scene. We'll use the first
+        // board by default.
+        //initBoard();
+        //setBoard(0);
+
+        // Add block to the scene.
+        addBlock(5);
+
+        // Add grid helper to the scene.
+        if (ADD_GRID_HELPER) {
+          var gridSize = BOARD_SIZE * CUBE_SIZE;
+          var gridDivisions = BOARD_SIZE;
+          var gridHelper = new THREE.GridHelper(gridSize, gridDivisions, 0x000000, 0x000000);
+          scene.add(gridHelper);
+        }
 
         // Add axis helper to the scene.
         if (ADD_AXIS_HELPER) {
-          var axisHelper = new THREE.AxisHelper(200);
+          var axisLength = (BOARD_SIZE * CUBE_SIZE) / 2;
+          var axisHelper = new THREE.AxisHelper(axisLength);
           scene.add(axisHelper);
         }
 
@@ -71,25 +92,156 @@
 
         // Attach the threeJS renderer to the HTML page
         document.body.appendChild(renderer.domElement);
+
       }
 
       // Add block at the provided location.
-      function addBlock(x = 0, y = 0, z = 0, color = 0xffffff) {
-        // Create geometry and material for block.
-        var blockGeometry = new THREE.BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        var blockMaterial = new THREE.MeshBasicMaterial({
+      function addBlock(blockType = 1, x = 0, y = 0, z = 0) {
+        // Which block do we need?
+        var block;
+        switch (blockType) {
+          case 1: 
+            block = BLOCK_1;
+            break;
+          case 2: 
+            block = BLOCK_2;
+            break;
+          case 3: 
+            block = BLOCK_3;
+            break;
+          case 4: 
+            block = BLOCK_4;
+            break;
+          case 5: 
+            block = BLOCK_5;
+            break;
+          case 6: 
+            block = BLOCK_6;
+            break;
+          case 7: 
+            block = BLOCK_7;
+            break;
+          default:
+            block = BLOCK_1;
+            break;
+        }
+
+        // Start drawing the cubes for the block.
+        for (var iX = 0; iX < block.grid.length; iX++) {
+          for (var iY = 0; iY < block.grid[iX].length; iY++) {
+            for (var iZ = 0; iZ < block.grid[iX][iY].length; iZ++) {
+              if (block.grid[iX][iY][iZ] == 1) {
+                addCube(x + iX, y + iY, z + iZ, block.color);
+              }
+            }
+          }
+        }
+      }
+
+      // Add cube at the provided location on the grid, where the grid starts
+      // at 0.
+      function addCube(x = 0, y = 0, z = 0, color = 0xffffff) {
+        // Create geometry and material for cube.
+        var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
+        //var cubeMaterial = new THREE.MeshBasicMaterial({
+        var cubeMaterial = new THREE.MeshPhongMaterial({
           color: color,
+          shading: THREE.FlatShading,
+          polygonOffset: true,
+          polygonOffsetFactor: 1,
+          polygonOffsetUnits: 1,
           wireframe: false
         });
 
-        // Create mesh for block.
-        var blockMesh = new THREE.Mesh(blockGeometry, blockMaterial);
+        // Create mesh for cube.
+        var cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+        // Create black outline for the cube.
+        var cubeOutlineGeometry = new THREE.EdgesGeometry(cubeMesh.geometry);
+        var cubeOutlineMaterial = new THREE.LineBasicMaterial({
+          color: 0x000000,
+          linewidth: 1
+        });
+        var cubeOutlineLineSegments = new THREE.LineSegments(
+          cubeOutlineGeometry,
+          cubeOutlineMaterial
+          );
+
+        // We have the board centered on the y-axis, so we need to adjust the
+        // position accordingly.
+        var cubeOffset = CUBE_SIZE / 2;
+        var xOffset = ((BOARD_SIZE / 2) * CUBE_SIZE) - cubeOffset;
+        var zOffset = xOffset;
+        var yOffset = cubeOffset
+        var newX = (x * CUBE_SIZE) - xOffset;
+        var newZ = (z * CUBE_SIZE) - zOffset;
+        var newY = (y * CUBE_SIZE) + yOffset;
 
         // Move it to the provided location.
-        blockMesh.position.set(x, y, z);
+        cubeMesh.position.set(newX, newY, newZ);
+        cubeOutlineLineSegments.position.set(newX, newY, newZ);
 
         // Add it to the scene.
-        scene.add(blockMesh);
+        scene.add(cubeMesh);
+        scene.add(cubeOutlineLineSegments);
+      }
+
+      // Initialize the board.
+      function initBoard() {
+        board = [];
+        for (var y = 0; y < BOARD_HEIGHT; y++) {
+          // Create layer to add to the board.
+          var layer = [];
+
+          // Add rows along z-axis to layer.
+          for (var z = 0; z < BOARD_SIZE; z++) {
+            // Create row to add to the layer.
+            var row = [];
+
+            // Add columns along x-axis to row.
+            for (var x = 0; x < BOARD_SIZE; x++) {
+              // Add empty cell.
+              row.push(0);
+            }
+
+            // Add row to the layer.
+            layer.push(row);
+          }
+
+          // Add layer to board.
+          board.push(layer);
+        }
+      }
+
+      // Clear the board of all cubes.
+      function clearBoard() {
+        // Board goes by layers, then rows along z-axis, then
+        // columns along x-axis.
+        for (var y = 0; y < board.length; y++) {
+          for (var z = 0; z < board[y].length; z++) {
+            for (var x = 0; x < board[y][z].length; x++) {
+              board[y][z][x] = 0;
+            }
+          }
+        }
+      }
+
+      // Set the board to use.
+      function setBoard(i = 0) {
+        // Make sure we're using a valid board.
+        if (i < 0 || i >= boards.length) {
+          // It's not a valid board, so default to the first one.
+          i = 0;
+        }
+
+        // Loop through the board array and add each cube to the board.
+        for (var z = 0; z < boards[i].length; z++) {
+          for (var x = 0; x < boards[i][z].length; x++) {
+            if (boards[i][z][x] != 0) {
+              addCube(x, 0, z, 0x888888);
+            }
+          }
+        }
       }
 
       // This is the game/animation loop
@@ -101,6 +253,8 @@
         //cameraRot -= 0.005;
         camera.position.y = CAMERA_Y;
         camera.position.x = Math.sin(cameraRot) * CAMERA_X;
+        // TODO: Remember to remove this when you're done.
+        //camera.position.x = 0;
         camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
         camera.lookAt(new THREE.Vector3(0, 0, 0));
 
