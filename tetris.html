@@ -11,6 +11,7 @@
 
     <script src="js/three.min.js"></script>
     <script src="js/constants.js"></script>
+    <script src="js/cube.js"></script>
     <script src="js/boards.js"></script>
     <script src="js/blocks.js"></script>
     <script>
@@ -141,49 +142,9 @@
       // Add cube at the provided location on the grid, where the grid starts
       // at 0.
       function addCube(x = 0, y = 0, z = 0, color = 0xffffff) {
-        // Create geometry and material for cube.
-        var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
-        //var cubeMaterial = new THREE.MeshBasicMaterial({
-        var cubeMaterial = new THREE.MeshPhongMaterial({
-          color: color,
-          shading: THREE.FlatShading,
-          polygonOffset: true,
-          polygonOffsetFactor: 1,
-          polygonOffsetUnits: 1,
-          wireframe: false
-        });
-
-        // Create mesh for cube.
-        var cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-
-        // Create black outline for the cube.
-        var cubeOutlineGeometry = new THREE.EdgesGeometry(cubeMesh.geometry);
-        var cubeOutlineMaterial = new THREE.LineBasicMaterial({
-          color: 0x000000,
-          linewidth: 1
-        });
-        var cubeOutlineLineSegments = new THREE.LineSegments(
-          cubeOutlineGeometry,
-          cubeOutlineMaterial
-          );
-
-        // We have the board centered on the y-axis, so we need to adjust the
-        // position accordingly.
-        var cubeOffset = CUBE_SIZE / 2;
-        var xOffset = ((BOARD_SIZE / 2) * CUBE_SIZE) - cubeOffset;
-        var zOffset = xOffset;
-        var yOffset = cubeOffset
-        var newX = (x * CUBE_SIZE) - xOffset;
-        var newZ = (z * CUBE_SIZE) - zOffset;
-        var newY = (y * CUBE_SIZE) + yOffset;
-
-        // Move it to the provided location.
-        cubeMesh.position.set(newX, newY, newZ);
-        cubeOutlineLineSegments.position.set(newX, newY, newZ);
-
-        // Add it to the scene.
-        scene.add(cubeMesh);
-        scene.add(cubeOutlineLineSegments);
+        var cube = new Cube(x, y, z, color);
+        cube.addToScene(scene);
+        return cube;
       }
 
       // Initialize the board.
@@ -238,10 +199,12 @@
         for (var z = 0; z < boards[i].length; z++) {
           for (var x = 0; x < boards[i][z].length; x++) {
             if (boards[i][z][x] != 0) {
-              addCube(x, 0, z, 0x888888);
+              board[0][z][x] = addCube(x, 0, z, 0x888888);
+              board[0][z][x].blockNumber = blockCounter;
             }
           }
         }
+        blockCounter += 1;
       }
 
       // This is the game/animation loop
