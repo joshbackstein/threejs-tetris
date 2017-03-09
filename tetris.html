@@ -11,6 +11,8 @@
 
     <script src="js/three.min.js"></script>
     <script src="js/constants.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/block.js"></script>
     <script src="js/cube.js"></script>
     <script src="js/boards.js"></script>
     <script src="js/blocks.js"></script>
@@ -21,7 +23,9 @@
       var scene, camera, renderer;
       var geometry, material, mesh;
       var cameraRot = Math.PI / 4;
-      var board = [];
+      var board;
+      var dropThreshold = 100;
+      var dropCounter = 0;
 
       init();
       animate();
@@ -35,7 +39,8 @@
         camera.position.y = CAMERA_Y;
         camera.position.x = Math.sin(cameraRot) * CAMERA_X;
         camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        //camera.lookAt(new THREE.Vector3(0, 0, 0));
+        camera.lookAt(new THREE.Vector3(CAMERA_POINT_X, CAMERA_POINT_Y, CAMERA_POINT_Z));
 
         // Add light to the scene.
         var ambientLight = new THREE.AmbientLight(0xf0f0f0);
@@ -66,11 +71,21 @@
 
         // Initialize board, then add it to the scene. We'll use the first
         // board by default.
-        //initBoard();
-        //setBoard(0);
+        board = new Board(BOARD_SIZE, BOARD_HEIGHT);
+        board = Object.defineProperty(board, "parent", {value: scene});
+        // TODO: Set default board.
+        //board.setBoard(DEFAULT_BOARD);
+        //board.setBoard(1);
+        // TODO: Board 4 (at index 3) is a test board for clearing blocks.
+        board.setBoard(3);
 
         // Add block to the scene.
-        addBlock(5);
+        // TODO: Randomize which block falls.
+        //board.addBlock(7);
+        board.addBlock(2);
+        //board.block.shiftX(1);
+        //board.block.shiftY(1);
+        //board.block.shiftZ(1);
 
         // Add grid helper to the scene.
         if (ADD_GRID_HELPER) {
@@ -93,118 +108,6 @@
 
         // Attach the threeJS renderer to the HTML page
         document.body.appendChild(renderer.domElement);
-
-      }
-
-      // Add block at the provided location.
-      function addBlock(blockType = 1, x = 0, y = 0, z = 0) {
-        // Which block do we need?
-        var block;
-        switch (blockType) {
-          case 1: 
-            block = BLOCK_1;
-            break;
-          case 2: 
-            block = BLOCK_2;
-            break;
-          case 3: 
-            block = BLOCK_3;
-            break;
-          case 4: 
-            block = BLOCK_4;
-            break;
-          case 5: 
-            block = BLOCK_5;
-            break;
-          case 6: 
-            block = BLOCK_6;
-            break;
-          case 7: 
-            block = BLOCK_7;
-            break;
-          default:
-            block = BLOCK_1;
-            break;
-        }
-
-        // Start drawing the cubes for the block.
-        for (var iX = 0; iX < block.grid.length; iX++) {
-          for (var iY = 0; iY < block.grid[iX].length; iY++) {
-            for (var iZ = 0; iZ < block.grid[iX][iY].length; iZ++) {
-              if (block.grid[iX][iY][iZ] == 1) {
-                addCube(x + iX, y + iY, z + iZ, block.color);
-              }
-            }
-          }
-        }
-      }
-
-      // Add cube at the provided location on the grid, where the grid starts
-      // at 0.
-      function addCube(x = 0, y = 0, z = 0, color = 0xffffff) {
-        var cube = new Cube(x, y, z, color);
-        cube.addToScene(scene);
-        return cube;
-      }
-
-      // Initialize the board.
-      function initBoard() {
-        board = [];
-        for (var y = 0; y < BOARD_HEIGHT; y++) {
-          // Create layer to add to the board.
-          var layer = [];
-
-          // Add rows along z-axis to layer.
-          for (var z = 0; z < BOARD_SIZE; z++) {
-            // Create row to add to the layer.
-            var row = [];
-
-            // Add columns along x-axis to row.
-            for (var x = 0; x < BOARD_SIZE; x++) {
-              // Add empty cell.
-              row.push(0);
-            }
-
-            // Add row to the layer.
-            layer.push(row);
-          }
-
-          // Add layer to board.
-          board.push(layer);
-        }
-      }
-
-      // Clear the board of all cubes.
-      function clearBoard() {
-        // Board goes by layers, then rows along z-axis, then
-        // columns along x-axis.
-        for (var y = 0; y < board.length; y++) {
-          for (var z = 0; z < board[y].length; z++) {
-            for (var x = 0; x < board[y][z].length; x++) {
-              board[y][z][x] = 0;
-            }
-          }
-        }
-      }
-
-      // Set the board to use.
-      function setBoard(i = 0) {
-        // Make sure we're using a valid board.
-        if (i < 0 || i >= boards.length) {
-          // It's not a valid board, so default to the first one.
-          i = 0;
-        }
-
-        // Loop through the board array and add each cube to the board.
-        for (var z = 0; z < boards[i].length; z++) {
-          for (var x = 0; x < boards[i][z].length; x++) {
-            if (boards[i][z][x] != 0) {
-              board[0][z][x] = addCube(x, 0, z, 0x888888);
-              board[0][z][x].blockNumber = blockCounter;
-            }
-          }
-        }
-        blockCounter += 1;
       }
 
       // This is the game/animation loop
@@ -213,13 +116,32 @@
         requestAnimationFrame(animate);
 
         // Move the camera
-        //cameraRot -= 0.005;
+        if (ROTATE) {
+          if (TESTING) {
+            cameraRot -= 0.02;
+          } else {
+            cameraRot -= 0.005;
+          }
+        }
         camera.position.y = CAMERA_Y;
         camera.position.x = Math.sin(cameraRot) * CAMERA_X;
         // TODO: Remember to remove this when you're done.
         //camera.position.x = 0;
         camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        //camera.lookAt(new THREE.Vector3(0, 0, 0));
+        camera.lookAt(new THREE.Vector3(CAMERA_POINT_X, CAMERA_POINT_Y, CAMERA_POINT_Z));
+
+        // Move the blocks. To do this, we will incrase the drop
+        // counter each frame. When it reaches the threshold, the
+        // blocks will drop another level.
+        dropCounter += 1;
+        if (dropCounter >= dropThreshold) {
+          // Reset the counter.
+          dropCounter = 0;
+
+          // Advance the block.
+          board.advance();
+        }
 
         // Render the scene.
         renderer.render(scene, camera);
