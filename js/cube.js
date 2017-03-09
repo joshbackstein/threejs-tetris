@@ -2,7 +2,7 @@
 
 /* Cube Object.
  */
-var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff) {
+var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0) {
   // Create geometry and material for cube.
   var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
   //var cubeMaterial = new THREE.MeshBasicMaterial({
@@ -29,18 +29,17 @@ var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff) {
     cubeOutlineMaterial
     );
 
-  // Set cube and outline meshes and their positions.
+  // Set cube and outline meshes, their positions, and the block
+  // number this cube is associated with.
   this.cube = cubeMesh;
   this.cubeOutline = cubeOutlineLineSegments;
   this.x = x;
   this.y = y;
   this.z = z;
+  this.blockNumber = blockNumber;
 
   // Update this cube's position.
   this.updatePosition();
-
-  // Use block number 0 by default.
-  this.blockNumber = 0;
 };
 
 /* Prototype functions.
@@ -48,29 +47,56 @@ var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff) {
 Cube.prototype = {
   constructor: Cube,
 
+  getCoordinates: function() {
+    return { x: this.x, y: this.y, z: this.z };
+  },
+
+  getX: function() {
+    return this.x;
+  },
+
+  getY: function() {
+    return this.y;
+  },
+
+  getZ: function() {
+    return this.z;
+  },
+
   setCoordinates: function(x = 0, y = 0, z = 0) {
     this.x = x;
     this.y = y;
     this.z = z;
-
     this.updatePosition();
   },
 
   setX: function(x = 0) {
     this.x = x;
-
     this.updatePosition();
   },
 
   setY: function(y = 0) {
     this.y = y;
-
     this.updatePosition();
   },
 
   setZ: function(z = 0) {
     this.z = z;
+    this.updatePosition();
+  },
 
+  addX: function(xOffset = 0) {
+    this.x += xOffset;
+    this.updatePosition();
+  },
+
+  addY: function(yOffset = 0) {
+    this.y += yOffset;
+    this.updatePosition();
+  },
+
+  addZ: function(zOffset = 0) {
+    this.z += zOffset;
     this.updatePosition();
   },
 
