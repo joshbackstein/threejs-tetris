@@ -55,7 +55,9 @@
 | Key            | Action                                        |
 | :------------: | :-------------------------------------------: |
 | `Up`/`Down`    | Move block along X-axis                       |
+| `K`/`J`        | Move block along X-axis                       |
 | `Left`/`Right` | Move block along Z-axis                       |
+| `H`/`L`        | Move block along Z-axis                       |
 | `Space`        | Increase drop speed                           |
 | `S`, `D`, `F`  | Rotate block about X-axis, Y-axis, and Z-axis |
 | `Q`            | Pause the game                                |
