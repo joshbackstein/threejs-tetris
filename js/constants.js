@@ -2,8 +2,6 @@
 
 // Global constants.
 const TESTING = !true;
-const BLOCK_DROP_SKIP = true;
-const ROTATE = true;
 const FLIP_BOARD = !true;
 const CORNER_CUBES = !true;
 const ADD_FLOOR = true;
