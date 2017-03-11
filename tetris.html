@@ -120,6 +120,12 @@
           if (e.key == " ") {
             board.block.shiftY(-1);
           }
+          if (e.key == "e" || e.key == "E") {
+            cameraRot -= 0.02;
+          }
+          if (e.key == "r" || e.key == "R") {
+            cameraRot += 0.02;
+          }
         });
 
         // Attach the threeJS renderer to the HTML page
@@ -132,19 +138,9 @@
         requestAnimationFrame(animate);
 
         // Move the camera
-        if (ROTATE) {
-          if (TESTING) {
-            cameraRot -= 0.02;
-          } else {
-            cameraRot -= 0.005;
-          }
-        }
         camera.position.y = CAMERA_Y;
         camera.position.x = Math.sin(cameraRot) * CAMERA_X;
-        // TODO: Remember to remove this when you're done.
-        //camera.position.x = 0;
         camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
-        //camera.lookAt(new THREE.Vector3(0, 0, 0));
         camera.lookAt(new THREE.Vector3(CAMERA_POINT_X, CAMERA_POINT_Y, CAMERA_POINT_Z));
 
         // Move the blocks. To do this, we will incrase the drop
