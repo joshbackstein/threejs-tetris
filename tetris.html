@@ -105,16 +105,16 @@
         // Add keyboard listeners.
         document.addEventListener("keydown", function(e) {
           console.log("keydown:", e.key);
-          if (e.key == "ArrowUp") {
+          if (e.key == "ArrowUp" || e.key == "k" || e.key == "K") {
             board.block.shiftX(-1);
           }
-          if (e.key == "ArrowDown") {
+          if (e.key == "ArrowDown" || e.key == "j" || e.key == "J") {
             board.block.shiftX(1);
           }
-          if (e.key == "ArrowLeft") {
+          if (e.key == "ArrowLeft" || e.key == "h" || e.key == "H") {
             board.block.shiftZ(1);
           }
-          if (e.key == "ArrowRight") {
+          if (e.key == "ArrowRight" || e.key == "l" || e.key == "L") {
             board.block.shiftZ(-1);
           }
           if (e.key == " ") {
