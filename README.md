@@ -14,11 +14,12 @@
 * **Game**
   * ~~Add block~~
   * ~~Remove completed layers~~
-  * **Advance remaining layers after layer removal**
+  * ~~Advance remaining layers after layer removal~~
   * **Add controls**
   * Add points
   * Add levels/speeds
   * Add music
+  * End game when new block collides with one on the board
 * **Boards**
   * **Create**
     * **Floor of board**
