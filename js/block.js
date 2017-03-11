@@ -141,6 +141,7 @@ Block.prototype = {
 
   addToBoard: function() {
     // Start drawing cubes for the block.
+    var cubeCount = 1;
     for (var iZ = 0; iZ < this.grid.length; iZ++) {
       for (var iY = 0; iY < this.grid[iZ].length; iY++) {
         for (var iX = 0; iX < this.grid[iZ][iY].length; iX++) {
@@ -201,8 +202,10 @@ Block.prototype = {
               attachments.zNeg = true;
             }
 
-            this.parent.addCube(bX, bY, bZ, this.color, this.blockNumber,
-              attachments);
+            var cube = this.parent.addCube(bX, bY, bZ, this.color,
+              this.blockNumber, attachments);
+            cube.setId(cubeCount);
+            cubeCount++;
           }
         }
       }

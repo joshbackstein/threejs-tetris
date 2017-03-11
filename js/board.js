@@ -65,12 +65,14 @@ Board.prototype = {
     // Clear the board before we add stuff to it.
     this.clear();
     this.blockCounter = 0;
+    this.isBlank = true;
 
     // Loop through the board array and add each cube to the board.
     for (var z = 0; z < boards[i].length; z++) {
       for (var x = 0; x < boards[i][z].length; x++) {
         if (boards[i][z][x] != 0) {
           this.grid[0][z][x] = this.addCube(x, 0, z, 0x888888);
+          this.isBlank = false;
         }
       }
     }
@@ -206,18 +208,143 @@ Board.prototype = {
     return layersComplete;
   },
 
+  // We need to check if a cube can actually fall.
+  cubeCanFall: function(x, y, z, checked = []) {
+    // Make it easier to reference the cube.
+    var cube = this.grid[y][z][x];
+    checked.push(cube.getId());
+
+    // Make sure this isn't an empty space, already on the bottom
+    // row, or outside the bounds of the grid.
+    if (y <= 0 || y >= this.grid.length
+      || z < 0 || z >= this.grid[y].length
+      || x < 0 || x >= this.grid[y][z].length
+      || this.grid[y][z][x] == 0
+      )
+    {
+      // A cube can't fall if it's already on the bottom or doesn't
+      // exist.
+      return false;
+    }
+
+    // If we've made it this far, the cube exists. If a cube is
+    // above another cube it is not attached to, it cannot fall,
+    // so none of the cubes attached to it can fall either.
+    var canFall = true;
+    if (this.checkCollision(x, y - 1, z, cube.blockNumber)) {
+      canFall = false;
+    }
+
+    // If we've gotten to this point, the cube has an open space
+    // below it, so we need to make sure it's not attached to any
+    // other cubes. We also don't want to check the previous cube.
+    if (cube.attachments.xPos == true) {
+      // Have we checked this one yet?
+      var xPos = this.grid[y][z][x + 1];
+      if (checked.indexOf(xPos.getId()) < 0) {
+        // If the attached cube can't fall, this one can't fall
+        // either.
+        if (!this.cubeCanFall(x + 1, y, z, checked)) {
+          canFall = false;
+        }
+      }
+    }
+    if (cube.attachments.xNeg == true) {
+      // Have we checked this one yet?
+      var xNeg = this.grid[y][z][x - 1];
+      if (checked.indexOf(xNeg.getId()) < 0) {
+        // If the attached cube can't fall, this one can't fall
+        // either.
+        if (!this.cubeCanFall(x - 1, y, z, checked)) {
+          canFall = false;
+        }
+      }
+    }
+    if (cube.attachments.yPos == true) {
+      // Have we checked this one yet?
+      var yPos = this.grid[y + 1][z][x];
+      if (checked.indexOf(yPos.getId()) < 0) {
+        // If the attached cube can't fall, this one can't fall
+        // either.
+        if (!this.cubeCanFall(x, y + 1, z, checked)) {
+          canFall = false;
+        }
+      }
+    }
+    if (cube.attachments.yNeg == true) {
+      // Have we checked this one yet?
+      var yNeg = this.grid[y - 1][z][x];
+      if (checked.indexOf(yNeg.getId()) < 0) {
+        // If the attached cube can't fall, this one can't fall
+        // either.
+        if (!this.cubeCanFall(x, y - 1, z, checked)) {
+          canFall = false;
+        }
+      }
+    }
+    if (cube.attachments.zPos == true) {
+      // Have we checked this one yet?
+      var zPos = this.grid[y][z + 1][x];
+      if (checked.indexOf(zPos.getId()) < 0) {
+        // If the attached cube can't fall, this one can't fall
+        // either.
+        if (!this.cubeCanFall(x, y, z + 1, checked)) {
+          canFall = false;
+        }
+      }
+    }
+    if (cube.attachments.zNeg == true) {
+      // Have we checked this one yet?
+      var zNeg = this.grid[y][z - 1][x];
+      if (checked.indexOf(zNeg.getId()) < 0) {
+        // If the attached cube can't fall, this one can't fall
+        // either.
+        if (!this.cubeCanFall(x, y, z - 1, checked)) {
+          canFall = false;
+        }
+      }
+    }
+
+    // If we've made it this far, the cube can fall.
+    return canFall;
+  },
+
   // Advance each layer of the board so we can check if any
   // layers are completed again.
   advanceLayers: function(layersComplete = []) {
     // Loop through the completed layers.
     for (var i = 0; i < layersComplete.length; i++) {
-      var y = layersComplete[i] + 1;
-      y -= i;
+      // If the bottom layer was cleared, we only want to shift things
+      // down to it if we're using a blank board. For any layers above
+      // that, we want to shift things down to them.
+      if ((layersComplete[i] == 0 && this.isBlank)
+        || layersComplete[i] > 0
+        )
+      {
+        var y = layersComplete[i] + 1;
+        y -= i;
 
-      for (; y < this.grid.length; y++) {
-        for (var z = 0; z < this.grid[y].length; z++) {
-          for (var x = 0; x < this.grid[y][z].length; x++) {
-            if (this.grid[y][z][x] != 0) {
+        for (; y < this.grid.length; y++) {
+          for (var z = 0; z < this.grid[y].length; z++) {
+            for (var x = 0; x < this.grid[y][z].length; x++) {
+              if (this.grid[y][z][x] != 0) {
+                this.grid[y][z][x].addY(-1);
+                this.grid[y - 1][z][x] = this.grid[y][z][x];
+                this.grid[y][z][x] = 0;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Loop through the rest of the layers. The bottom layer can't fall,
+    // so we'll start at the one right above it.
+    for (var y = 1; y < this.grid.length; y++) {
+      for (var z = 0; z < this.grid[y].length; z++) {
+        for (var x = 0; x < this.grid[y][z].length; x++) {
+          if (this.grid[y][z][x] != 0) {
+            if (this.cubeCanFall(x, y, z)) {
               this.grid[y][z][x].addY(-1);
               this.grid[y - 1][z][x] = this.grid[y][z][x];
               this.grid[y][z][x] = 0;

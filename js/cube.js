@@ -59,6 +59,10 @@ var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, att
     this.attachments.zNeg = false;
   }
 
+  // Default ID of 0. This is used to know which cube in the block
+  // this is.
+  this.id = 0;
+
   // Update this cube's position.
   this.updatePosition();
 };
@@ -119,6 +123,14 @@ Cube.prototype = {
   addZ: function(zOffset = 0) {
     this.z += zOffset;
     this.updatePosition();
+  },
+
+  getId: function() {
+    return this.id;
+  },
+
+  setId: function(id = 0) {
+    this.id = id;
   },
 
   updatePosition: function() {
