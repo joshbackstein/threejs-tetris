@@ -80,12 +80,8 @@
         board.setBoard(3);
 
         // Add block to the scene.
-        // TODO: Randomize which block falls.
-        //board.addBlock(7);
-        board.addBlock(2);
-        //board.block.shiftX(1);
-        //board.block.shiftY(1);
-        //board.block.shiftZ(1);
+        var randomBlock = Math.floor(Math.random() * blocks.length);
+        board.addBlock(randomBlock);
 
         // Add grid helper to the scene.
         if (ADD_GRID_HELPER) {
