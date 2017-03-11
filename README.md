@@ -45,8 +45,8 @@
   * Rotate block about Z-axis
   * Pause the game
   * Toggle music
-  * Rotate camera clockwise around board
-  * Rotate camera counterclockwise around board
+  * ~~Rotate camera clockwise around board~~
+  * ~~Rotate camera counterclockwise around board~~
 
 ## Usage
 
