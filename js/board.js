@@ -171,8 +171,8 @@ Board.prototype = {
   // Check each layer of the board for completion and remove any
   // completed layers.
   checkLayers: function() {
-    // Flag to let us know if any layers were completed.
-    var someLayerComplete = false;
+    // Array to let us know what layers were completed.
+    var layersComplete = [];
 
     // Check each layer for completion.
     for (var y = 0; y < this.grid.length; y++) {
@@ -188,9 +188,9 @@ Board.prototype = {
 
       // Was the layer complete?
       if (thisLayerComplete) {
-        // It was, so set the flag and remove all the blocks
-        // in that layer and advance the layers.
-        someLayerComplete = true;
+        // It was, so add the layer to the array and remove all the
+        // blocks in that layer.
+        layersComplete.push(y);
         for (var z = 0; z < this.grid[y].length; z++) {
           for (var x = 0; x < this.grid[y][z].length; x++) {
             // We don't want to remove permanent cubes from the level.
@@ -203,40 +203,53 @@ Board.prototype = {
     }
 
     // Return the result.
-    return someLayerComplete;
+    return layersComplete;
   },
 
   // Advance each layer of the board so we can check if any
   // layers are completed again.
-  advanceLayers: function() {
-    // TODO: Add code.
+  advanceLayers: function(layersComplete = []) {
+    // Loop through the completed layers.
+    for (var i = 0; i < layersComplete.length; i++) {
+      var y = layersComplete[i] + 1;
+      y -= i;
+
+      for (; y < this.grid.length; y++) {
+        for (var z = 0; z < this.grid[y].length; z++) {
+          for (var x = 0; x < this.grid[y][z].length; x++) {
+            if (this.grid[y][z][x] != 0) {
+              this.grid[y][z][x].addY(-1);
+              this.grid[y - 1][z][x] = this.grid[y][z][x];
+              this.grid[y][z][x] = 0;
+            }
+          }
+        }
+      }
+    }
   },
 
   // Advance the block.
   advance: function() {
     // Advance the block.
-    if (BLOCK_DROP_SKIP) {
-      this.block.shiftY(-10);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-      this.block.shiftY(-1);
-    }
-    this.block.shiftY(-1);
+    var blockStopped = !this.block.shiftY(-1);
 
-    // Check for layer completions and remove any completed layers.
-    while (this.checkLayers()) {
-      // If any layers were completed, we need to advance
-      // the layers before checking them again.
-      this.advanceLayers();
-    }
+    // We only want to check the layers when the block has stopped dropping.
+    if (blockStopped) {
+      // Check for layer completions and remove any completed layers.
+      var layersComplete = this.checkLayers();
+      while (layersComplete.length > 0) {
+        // If any layers were completed, we need to advance
+        // the layers before checking them again.
+        this.advanceLayers(layersComplete);
+        layersComplete = this.checkLayers();
+      }
 
-    // Show us what the board looks like after we've advanced everything.
-    console.log(this);
+      // We need to drop a new block.
+      var blockType = Math.floor(Math.random() * blocks.length);
+      this.addBlock(blockType);
+
+      // Show us what the board looks like after we've advanced everything.
+      console.log(this);
+    }
   }
 };

@@ -42,7 +42,12 @@ Block.prototype = {
     // Actually update the block's position in the scene
     // and on the board.
     if (this.checkNewPosition(offset, 0, 0)) {
+      // Shift.
       this.updatePosition(offset, 0, 0);
+      return true;
+    } else {
+      // Don't shift.
+      return false;
     }
   },
 
@@ -51,6 +56,10 @@ Block.prototype = {
     // and on the board.
     if (this.checkNewPosition(0, offset, 0)) {
       this.updatePosition(0, offset, 0);
+      return true;
+    } else {
+      // Don't shift.
+      return false;
     }
   },
 
@@ -59,6 +68,10 @@ Block.prototype = {
     // and on the board.
     if (this.checkNewPosition(0, 0, offset)) {
       this.updatePosition(0, 0, offset);
+      return true;
+    } else {
+      // Don't shift.
+      return false;
     }
   },
 
