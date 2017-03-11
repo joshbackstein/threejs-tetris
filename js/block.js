@@ -2,35 +2,15 @@
 
 /* Block Object.
  */
-var Block = function(blockType = 1, blockNumber = 0, x = 0, y = BOARD_HEIGHT - 1, z = 0) {
-  // Which block do we need?
-  var block;
-  switch (blockType) {
-    case 1:
-      block = BLOCK_1;
-      break;
-    case 2:
-      block = BLOCK_2;
-      break;
-    case 3:
-      block = BLOCK_3;
-      break;
-    case 4:
-      block = BLOCK_4;
-      break;
-    case 5:
-      block = BLOCK_5;
-      break;
-    case 6:
-      block = BLOCK_6;
-      break;
-    case 7:
-      block = BLOCK_7;
-      break;
-    default:
-      block = BLOCK_1;
-      break;
+var Block = function(blockType = 0, blockNumber = 0, x = 0, y = BOARD_HEIGHT - 1, z = 0) {
+  // Make sure we're using a valid block.
+  if (blockType < 0 || blockType >= blocks.length) {
+    // It's not a valid block, so default to the first one.
+    blockType = 0;
   }
+
+  // Which block do we need?
+  var block = blocks[blockType];
 
   // Copy the block's properties to this object.
   this.color = block.color;

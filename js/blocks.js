@@ -1,6 +1,7 @@
 "use strict";
 
 // Block piece constants.
+var blocks = [];
 /*
   Shape:
     ::::::::
@@ -40,6 +41,7 @@ const BLOCK_1 = {
     ]
   ]
 };
+blocks.push(BLOCK_1);
 /*
   Shape:
     ::
@@ -71,6 +73,7 @@ const BLOCK_2 = {
     ]
   ]
 };
+blocks.push(BLOCK_2);
 /*
   Shape:
     Cube
@@ -94,6 +97,7 @@ const BLOCK_3 = {
     ]
   ]
 };
+blocks.push(BLOCK_3);
 /*
   Shape:
       ::::
@@ -125,6 +129,7 @@ const BLOCK_4 = {
     ]
   ]
 };
+blocks.push(BLOCK_4);
 /*
   Shape:
       ::
@@ -156,6 +161,7 @@ const BLOCK_5 = {
     ]
   ]
 };
+blocks.push(BLOCK_5);
 /*
   Shape:
     Jack
@@ -219,3 +225,4 @@ const BLOCK_7 = {
     ]
   ]
 };
+blocks.push(BLOCK_7);
