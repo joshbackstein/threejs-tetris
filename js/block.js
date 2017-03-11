@@ -136,7 +136,60 @@ Block.prototype = {
             var bY = this.yStart - iY;
             var bZ = this.zStart + iZ;
 
-            this.parent.addCube(bX, bY, bZ, this.color, this.blockNumber);
+            // We need to see what blocks this one is connected to.
+            var attachments = {
+              xPos: false,
+              xNeg: false,
+              yPos: false,
+              yNeg: false,
+              zPos: false,
+              zNeg: false
+            };
+            // Is there an attachment in the positive X direction?
+            if (iX < this.grid[iZ][iY].length - 1
+              && this.grid[iZ][iY][iX + 1] == 1
+              )
+            {
+              attachments.xPos = true;
+            }
+            // Is there an attachment in the negative X direction?
+            if (iX > 0
+              && this.grid[iZ][iY][iX - 1] == 1
+              )
+            {
+              attachments.xNeg = true;
+            }
+            // Is there an attachment in the positive Y direction?
+            if (iY > 0
+              && this.grid[iZ][iY - 1][iX] == 1
+              )
+            {
+              attachments.yPos = true;
+            }
+            // Is there an attachment in the negative Y direction?
+            if (iY < this.grid[iZ].length - 1
+              && this.grid[iZ][iY + 1][iX] == 1
+              )
+            {
+              attachments.yNeg = true;
+            }
+            // Is there an attachment in the positive Z direction?
+            if (iZ < this.grid.length - 1
+              && this.grid[iZ + 1][iY][iX] == 1
+              )
+            {
+              attachments.zPos = true;
+            }
+            // Is there an attachment in the negative Z direction?
+            if (iZ > 0
+              && this.grid[iZ - 1][iY][iX] == 1
+              )
+            {
+              attachments.zNeg = true;
+            }
+
+            this.parent.addCube(bX, bY, bZ, this.color, this.blockNumber,
+              attachments);
           }
         }
       }

@@ -83,10 +83,10 @@ Board.prototype = {
     this.block.addToBoard(board);
   },
 
-  addCube: function(x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = this.blockCounter) {
+  addCube: function(x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = this.blockCounter, attachments = {}) {
     if (!this.checkCollision(x, y, z, blockNumber)) {
       // Create cube, then add it to the board and the scene.
-      var cube = new Cube(x, y, z, color, blockNumber);
+      var cube = new Cube(x, y, z, color, blockNumber, attachments);
       Object.defineProperty(cube, "parent", {value: this});
       this.grid[y][z][x] = cube;
       cube.addToScene(this.parent);
@@ -99,8 +99,31 @@ Board.prototype = {
 
   removeCube: function(x = 0, y = 0, z = 0) {
     if (this.grid[y][z][x] != 0) {
-      this.parent.remove(this.grid[y][z][x].cube);
-      this.parent.remove(this.grid[y][z][x].cubeOutline);
+      // Check if this cube has any attachments so we can remove
+      // the association.
+      var cube = this.grid[y][z][x];
+      if (cube.attachments.xPos == true) {
+        this.grid[y][z][x + 1].attachments.xNeg = false;
+      }
+      if (cube.attachments.xNeg == true) {
+        this.grid[y][z][x - 1].attachments.xPos = false;
+      }
+      if (cube.attachments.yPos == true) {
+        this.grid[y + 1][z][x].attachments.yNeg = false;
+      }
+      if (cube.attachments.yNeg == true) {
+        this.grid[y - 1][z][x].attachments.yPos = false;
+      }
+      if (cube.attachments.zPos == true) {
+        this.grid[y][z + 1][x].attachments.zNeg = false;
+      }
+      if (cube.attachments.zNeg == true) {
+        this.grid[y][z - 1][x].attachments.zPos = false;
+      }
+
+      // Remove it from the scene and the board.
+      this.parent.remove(cube.cube);
+      this.parent.remove(cube.cubeOutline);
       this.grid[y][z][x] = 0;
     }
   },
