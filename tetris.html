@@ -106,6 +106,26 @@
         renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
 
+        // Add keyboard listeners.
+        document.addEventListener("keydown", function(e) {
+          console.log("keydown:", e.key);
+          if (e.key == "ArrowUp") {
+            board.block.shiftX(-1);
+          }
+          if (e.key == "ArrowDown") {
+            board.block.shiftX(1);
+          }
+          if (e.key == "ArrowLeft") {
+            board.block.shiftZ(1);
+          }
+          if (e.key == "ArrowRight") {
+            board.block.shiftZ(-1);
+          }
+          if (e.key == " ") {
+            board.block.shiftY(-1);
+          }
+        });
+
         // Attach the threeJS renderer to the HTML page
         document.body.appendChild(renderer.domElement);
       }
