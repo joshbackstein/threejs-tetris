@@ -11,7 +11,7 @@ const CUBE_SIZE = 40;
 const BOARD_SIZE = 10;
 const BOARD_HEIGHT = 20;
 const DEFAULT_BOARD = 0;
-const ROTATION_AMOUNT = 0.02;
+const ROTATION_AMOUNT = 0.05;
 
 // Testing
 var camera_y, camera_x, camera_z;
