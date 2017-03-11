@@ -2,7 +2,7 @@
 
 /* Cube Object.
  */
-var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0) {
+var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, attachments = {}) {
   // Create geometry and material for cube.
   var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
   //var cubeMaterial = new THREE.MeshBasicMaterial({
@@ -37,6 +37,27 @@ var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0) {
   this.y = y;
   this.z = z;
   this.blockNumber = blockNumber;
+
+  // We want to know if this cube is attached to any other cubes.
+  this.attachments = attachments;
+  if (this.attachments.xPos == undefined) {
+    this.attachments.xPos = false;
+  }
+  if (this.attachments.xNeg == undefined) {
+    this.attachments.xNeg = false;
+  }
+  if (this.attachments.yPos == undefined) {
+    this.attachments.yPos = false;
+  }
+  if (this.attachments.yNeg == undefined) {
+    this.attachments.yNeg = false;
+  }
+  if (this.attachments.zPos == undefined) {
+    this.attachments.zPos = false;
+  }
+  if (this.attachments.zNeg == undefined) {
+    this.attachments.zNeg = false;
+  }
 
   // Update this cube's position.
   this.updatePosition();
