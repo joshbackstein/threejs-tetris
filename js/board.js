@@ -139,7 +139,7 @@ Board.prototype = {
       || x < 0
       )
     {
-      // Collision.
+      // Invalid location, so return a collision.
       return true;
     } else {
       if (this.grid[y][z][x] != 0
