@@ -81,6 +81,7 @@ Board.prototype = {
     this.block = new Block(blockType, this.blockCounter, x, y, z);
     Object.defineProperty(this.block, "parent", {value: this});
     this.block.addToBoard(board);
+    this.blockCounter += 1;
   },
 
   addCube: function(x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = this.blockCounter, attachments = {}) {
