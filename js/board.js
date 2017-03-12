@@ -67,11 +67,16 @@ Board.prototype = {
       i = 0;
     }
 
+    // Store the board we're using.
+    this.boardType = i;
+
     // Let us know what board we're using.
     console.log("Setting board: %d", i + 1);
 
-    // Clear the board before we add stuff to it.
+    // Clear the board before we add stuff to it and reset other
+    // properties.
     this.clear();
+    this.block = null;
     this.blockCounter = 0;
     this.isBlank = true;
 
