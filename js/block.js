@@ -77,15 +77,126 @@ Block.prototype = {
   },
 
   rotateX: function(offset = 1) {
-    // TODO: Add code.
+    // Create new grid to store rotation for this block. The outer
+    // array contains each slice along the Z-axis.
+    var rotGrid = [];
+    for (var z = 0; z < this.grid.length; z++) {
+      rotGrid.push([]);
+      for (var y = 0; y < this.grid[z].length; y++) {
+        rotGrid[z].push([]);
+        for (var x = 0; x < this.grid[z][y].length; x++) {
+          rotGrid[z][y].push(0);
+        }
+      }
+    }
+
+    // Rotate.
+    for (var oZ = 0; oZ < this.grid.length; oZ++) {
+      for (var oY = 0; oY < this.grid[oZ].length; oY++) {
+        for (var oX = 0; oX < this.grid[oZ][oY].length; oX++) {
+          var nX = oX;
+          var nY = this.size - 1 - oZ;
+          var nZ = oY;
+
+          rotGrid[nZ][nY][nX] = this.grid[oZ][oY][oX];
+        }
+      }
+    }
+
+    // We need to apply the new grid to check it for collisions,
+    // so make a backup of the current one.
+    var oldGrid = this.grid;
+    this.grid = rotGrid;
+    if (this.checkNewPosition(0, 0, 0)) {
+      // No collsions, so update the position of the block to
+      // refresh it on the board and the scene.
+      this.updatePosition(0, 0, 0);
+    } else {
+      // There was at least one collision, so restore the old grid.
+      this.grid = oldGrid;
+    }
   },
 
   rotateY: function(offset = 1) {
-    // TODO: Add code.
+    // Create new grid to store rotation for this block. The outer
+    // array contains each slice along the Z-axis.
+    var rotGrid = [];
+    for (var z = 0; z < this.grid.length; z++) {
+      rotGrid.push([]);
+      for (var y = 0; y < this.grid[z].length; y++) {
+        rotGrid[z].push([]);
+        for (var x = 0; x < this.grid[z][y].length; x++) {
+          rotGrid[z][y].push(0);
+        }
+      }
+    }
+
+    // Rotate.
+    for (var oZ = 0; oZ < this.grid.length; oZ++) {
+      for (var oY = 0; oY < this.grid[oZ].length; oY++) {
+        for (var oX = 0; oX < this.grid[oZ][oY].length; oX++) {
+          var nX = this.size - 1 - oZ;
+          var nY = oY;
+          var nZ = oX;
+
+          rotGrid[nZ][nY][nX] = this.grid[oZ][oY][oX];
+        }
+      }
+    }
+
+    // We need to apply the new grid to check it for collisions,
+    // so make a backup of the current one.
+    var oldGrid = this.grid;
+    this.grid = rotGrid;
+    if (this.checkNewPosition(0, 0, 0)) {
+      // No collsions, so update the position of the block to
+      // refresh it on the board and the scene.
+      this.updatePosition(0, 0, 0);
+    } else {
+      // There was at least one collision, so restore the old grid.
+      this.grid = oldGrid;
+    }
   },
 
   rotateZ: function(offset = 1) {
-    // TODO: Add code.
+    // Create new grid to store rotation for this block. The outer
+    // array contains each slice along the Z-axis.
+    var rotGrid = [];
+    for (var z = 0; z < this.grid.length; z++) {
+      rotGrid.push([]);
+      for (var y = 0; y < this.grid[z].length; y++) {
+        rotGrid[z].push([]);
+        for (var x = 0; x < this.grid[z][y].length; x++) {
+          rotGrid[z][y].push(0);
+        }
+      }
+    }
+
+    // Rotate.
+    for (var oZ = 0; oZ < this.grid.length; oZ++) {
+      for (var oY = 0; oY < this.grid[oZ].length; oY++) {
+        for (var oX = 0; oX < this.grid[oZ][oY].length; oX++) {
+          var nX = this.size - 1 - oY;
+          var nY = oX;
+          var nZ = oZ;
+
+          rotGrid[nZ][nY][nX] = this.grid[oZ][oY][oX];
+        }
+      }
+    }
+
+    // We need to apply the new grid to check it for collisions,
+    // so make a backup of the current one.
+    var oldGrid = this.grid;
+    this.grid = rotGrid;
+    if (this.checkNewPosition(0, 0, 0)) {
+      // No collsions, so update the position of the block to
+      // refresh it on the board and the scene.
+      this.updatePosition(0, 0, 0);
+    } else {
+      // There was at least one collision, so restore the old grid.
+      this.grid = oldGrid;
+    }
   },
 
   checkNewPosition: function(xOffset = 0, yOffset = 0, zOffset = 0) {

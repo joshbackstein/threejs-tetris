@@ -120,6 +120,15 @@
           if (e.key == " ") {
             dropCounter = dropThreshold;
           }
+          if (e.key == "s" || e.key == "S") {
+            board.block.rotateX(1);
+          }
+          if (e.key == "d" || e.key == "D") {
+            board.block.rotateY(1);
+          }
+          if (e.key == "f" || e.key == "F") {
+            board.block.rotateZ(1);
+          }
           if (e.key == "e" || e.key == "E") {
             cameraRot -= ROTATION_AMOUNT
           }
