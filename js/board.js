@@ -275,7 +275,7 @@ Board.prototype = {
     if (cube.attachments.xPos == true) {
       // Have we checked this one yet?
       var xPos = this.grid[y][z][x + 1];
-      if (checked.indexOf(xPos.getId()) < 0) {
+      if (xPos != 0 && checked.indexOf(xPos.getId()) < 0) {
         // If the attached cube can't fall, this one can't fall
         // either.
         if (!this.cubeCanFall(x + 1, y, z, checked)) {
@@ -286,7 +286,7 @@ Board.prototype = {
     if (cube.attachments.xNeg == true) {
       // Have we checked this one yet?
       var xNeg = this.grid[y][z][x - 1];
-      if (checked.indexOf(xNeg.getId()) < 0) {
+      if (xNeg != 0 && checked.indexOf(xNeg.getId()) < 0) {
         // If the attached cube can't fall, this one can't fall
         // either.
         if (!this.cubeCanFall(x - 1, y, z, checked)) {
@@ -297,7 +297,7 @@ Board.prototype = {
     if (cube.attachments.yPos == true) {
       // Have we checked this one yet?
       var yPos = this.grid[y + 1][z][x];
-      if (checked.indexOf(yPos.getId()) < 0) {
+      if (yPos != 0 && checked.indexOf(yPos.getId()) < 0) {
         // If the attached cube can't fall, this one can't fall
         // either.
         if (!this.cubeCanFall(x, y + 1, z, checked)) {
@@ -308,7 +308,7 @@ Board.prototype = {
     if (cube.attachments.yNeg == true) {
       // Have we checked this one yet?
       var yNeg = this.grid[y - 1][z][x];
-      if (checked.indexOf(yNeg.getId()) < 0) {
+      if (yNeg != 0 && checked.indexOf(yNeg.getId()) < 0) {
         // If the attached cube can't fall, this one can't fall
         // either.
         if (!this.cubeCanFall(x, y - 1, z, checked)) {
@@ -319,7 +319,7 @@ Board.prototype = {
     if (cube.attachments.zPos == true) {
       // Have we checked this one yet?
       var zPos = this.grid[y][z + 1][x];
-      if (checked.indexOf(zPos.getId()) < 0) {
+      if (zPos != 0 && checked.indexOf(zPos.getId()) < 0) {
         // If the attached cube can't fall, this one can't fall
         // either.
         if (!this.cubeCanFall(x, y, z + 1, checked)) {
@@ -330,7 +330,7 @@ Board.prototype = {
     if (cube.attachments.zNeg == true) {
       // Have we checked this one yet?
       var zNeg = this.grid[y][z - 1][x];
-      if (checked.indexOf(zNeg.getId()) < 0) {
+      if (zNeg != 0 && checked.indexOf(zNeg.getId()) < 0) {
         // If the attached cube can't fall, this one can't fall
         // either.
         if (!this.cubeCanFall(x, y, z - 1, checked)) {
