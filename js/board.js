@@ -92,6 +92,27 @@ Board.prototype = {
     this.blockCounter += 1;
   },
 
+  // Reset the board using the current board we're set to.
+  reset: function() {
+    this.setBoard(this.boardType);
+  },
+
+  // End the game.
+  endGame: function() {
+    // This will get called multiple times if multiple cubes collide
+    // when adding a new block, so we will only do this stuff for the
+    // first collision.
+    if (this.keepPlaying) {
+      // Set flag.
+      this.keepPlaying = false;
+
+      // Let us know the game has ended.
+      console.log("Game over!");
+
+      // TODO: Add menu to restart game.
+    }
+  },
+
   addBlock: function(blockType = 1, x = 0, y = BOARD_HEIGHT - 1, z = 0) {
     this.block = new Block(blockType, this.blockCounter, x, y, z);
     Object.defineProperty(this.block, "parent", {value: this});
