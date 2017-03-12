@@ -253,7 +253,7 @@ Block.prototype = {
 
   addToBoard: function() {
     // Start drawing cubes for the block.
-    var cubeCount = 1;
+    var cubeCount = 0;
     for (var iZ = 0; iZ < this.grid.length; iZ++) {
       for (var iY = 0; iY < this.grid[iZ].length; iY++) {
         for (var iX = 0; iX < this.grid[iZ][iY].length; iX++) {
