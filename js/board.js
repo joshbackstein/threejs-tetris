@@ -389,28 +389,31 @@ Board.prototype = {
     }
   },
 
-  // Advance the block.
+  // Advance the game.
   advance: function() {
-    // Advance the block.
-    var blockStopped = !this.block.shiftY(-1);
+    // We only want to advance things if the game hasn't ended.
+    if (this.keepPlaying) {
+      // Advance the block.
+      var blockStopped = !this.block.shiftY(-1);
 
-    // We only want to check the layers when the block has stopped dropping.
-    if (blockStopped) {
-      // Check for layer completions and remove any completed layers.
-      var layersComplete = this.checkLayers();
-      while (layersComplete.length > 0) {
-        // If any layers were completed, we need to advance
-        // the layers before checking them again.
-        this.advanceLayers(layersComplete);
-        layersComplete = this.checkLayers();
+      // We only want to check the layers when the block has stopped dropping.
+      if (blockStopped) {
+        // Check for layer completions and remove any completed layers.
+        var layersComplete = this.checkLayers();
+        while (layersComplete.length > 0) {
+          // If any layers were completed, we need to advance
+          // the layers before checking them again.
+          this.advanceLayers(layersComplete);
+          layersComplete = this.checkLayers();
+        }
+
+        // We need to drop a new block.
+        var blockType = Math.floor(Math.random() * blocks.length);
+        this.addBlock(blockType);
+
+        // Show us what the board looks like after we've advanced everything.
+        console.log(this);
       }
-
-      // We need to drop a new block.
-      var blockType = Math.floor(Math.random() * blocks.length);
-      this.addBlock(blockType);
-
-      // Show us what the board looks like after we've advanced everything.
-      console.log(this);
     }
   }
 };

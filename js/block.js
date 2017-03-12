@@ -314,14 +314,26 @@ Block.prototype = {
               attachments.zNeg = true;
             }
 
-            var cube = this.parent.addCube(bX, bY, bZ, this.color,
-              this.blockNumber, attachments);
-            cube.setId(cubeCount);
-            cubeCount++;
+            // Can the cube be added here, or is another cube in the way?
+            var willCollide = this.parent.checkCollision(bX, bY, bZ, this.blockNumber);
+            //if (cube == null) {
+            if (willCollide) {
+              // If the cube is null, it couldn't be placed because a cube
+              // is already there. If that happens, we're stacked too high
+              // and need to end the game.
+              this.parent.endGame();
+            } else {
+              // We were able to add the cube, so set its ID.
+              var cube = this.parent.addCube(bX, bY, bZ, this.color,
+                this.blockNumber, attachments);
+              cube.setId(cubeCount);
+              cubeCount++;
+            }
           }
         }
       }
     }
+
     if (CORNER_CUBES) {
       var x = this.x;
       var y = this.y;
