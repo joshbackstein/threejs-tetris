@@ -11,6 +11,7 @@ var blocks = [];
 */
 const BLOCK_1 = {
   color: 0x00ffff,
+  size: 4,
   depth: 4,
   height: 4,
   width: 4,
@@ -52,6 +53,7 @@ blocks.push(BLOCK_1);
 */
 const BLOCK_2 = {
   color: 0x0000ff,
+  size: 3,
   depth: 3,
   height: 3,
   width: 3,
@@ -83,6 +85,7 @@ blocks.push(BLOCK_2);
 */
 const BLOCK_3 = {
   color: 0xffff00,
+  size: 2,
   depth: 2,
   height: 2,
   width: 2,
@@ -108,6 +111,7 @@ blocks.push(BLOCK_3);
 */
 const BLOCK_4 = {
   color: 0x00ff00,
+  size: 3,
   depth: 3,
   height: 3,
   width: 3,
@@ -140,6 +144,7 @@ blocks.push(BLOCK_4);
 */
 const BLOCK_5 = {
   color: 0xaa00ff,
+  size: 3,
   depth: 3,
   height: 3,
   width: 3,
@@ -171,6 +176,7 @@ blocks.push(BLOCK_5);
 */
 const BLOCK_6 = {
   color: 0xff0000,
+  size: 3,
   depth: 3,
   height: 3,
   width: 3,
@@ -204,6 +210,7 @@ blocks.push(BLOCK_6);
 */
 const BLOCK_7 = {
   color: 0xffa500,
+  size: 3,
   depth: 3,
   height: 3,
   width: 3,

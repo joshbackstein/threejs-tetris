@@ -14,6 +14,7 @@ var Block = function(blockType = 0, blockNumber = 0, x = 0, y = BOARD_HEIGHT - 1
 
   // Copy the block's properties to this object.
   this.color = block.color;
+  this.size = block.size;
   this.depth = block.depth;
   this.height = block.height;
   this.width = block.width;
