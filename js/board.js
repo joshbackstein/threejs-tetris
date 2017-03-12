@@ -28,7 +28,15 @@ var Board = function(size, height) {
     this.grid.push(layer);
   }
 
+  // By default, we'll keep playing the game.
+  this.keepPlaying = true;
+
+  // We also want to keep track of which board we're using
+  // so we can easily reset it.
+  this.boardType = DEFAULT_BOARD;
+
   // We need a way to keep track of the current block.
+  this.block = null;
   this.blockCounter = 0;
 };
 
