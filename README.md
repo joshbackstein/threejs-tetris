@@ -19,7 +19,7 @@
   * Add points
   * Add levels/speeds
   * Add music
-  * End game when new block collides with one on the board
+  * ~~End game when blocks are stacked too tall for new blocks to be added~~
 * **Boards**
   * **Create**
     * **Floor of board**
@@ -27,10 +27,10 @@
     * **Floor of board**
   * ~~Set~~
   * ~~Clear~~
-* **Blocks**
+* ~~Blocks~~
   * ~~Add to board~~
   * ~~Shift along X, Y, and Z axes~~
-  * **Rotate about X, Y, and Z axes**
+  * ~~Rotate about X, Y, and Z axes~~
 * ~~Cubes~~
   * ~~Create~~
   * ~~Add to board~~
@@ -41,9 +41,9 @@
   * ~~Move along X-axis~~
   * ~~Move along Z-axis~~
   * ~~Increase drop speed~~
-  * Rotate block about X-axis
-  * Rotate block about Y-axis
-  * Rotate block about Z-axis
+  * ~~Rotate block about X-axis~~
+  * ~~Rotate block about Y-axis~~
+  * ~~Rotate block about Z-axis~~
   * Pause the game
   * Toggle music
   * ~~Rotate camera clockwise around board~~
