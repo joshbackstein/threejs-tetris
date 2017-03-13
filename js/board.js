@@ -97,6 +97,11 @@ Board.prototype = {
     this.setBoard(this.boardType);
   },
 
+  // Start the game.
+  startGame: function() {
+    this.keepPlaying = true;
+  },
+
   // End the game.
   endGame: function() {
     // This will get called multiple times if multiple cubes collide
@@ -393,6 +398,12 @@ Board.prototype = {
   advance: function() {
     // We only want to advance things if the game hasn't ended.
     if (this.keepPlaying) {
+      // If we don't have a block, add one.
+      if (this.block == null) {
+        var blockType = Math.floor(Math.random() * blocks.length);
+        this.addBlock(blockType);
+      }
+
       // Advance the block.
       var blockStopped = !this.block.shiftY(-1);
 
