@@ -76,7 +76,7 @@ Block.prototype = {
     }
   },
 
-  rotateX: function(offset = 1) {
+  rotateX: function() {
     // Create new grid to store rotation for this block. The outer
     // array contains each slice along the Z-axis.
     var rotGrid = [];
@@ -117,7 +117,7 @@ Block.prototype = {
     }
   },
 
-  rotateY: function(offset = 1) {
+  rotateY: function() {
     // Create new grid to store rotation for this block. The outer
     // array contains each slice along the Z-axis.
     var rotGrid = [];
@@ -158,7 +158,7 @@ Block.prototype = {
     }
   },
 
-  rotateZ: function(offset = 1) {
+  rotateZ: function() {
     // Create new grid to store rotation for this block. The outer
     // array contains each slice along the Z-axis.
     var rotGrid = [];

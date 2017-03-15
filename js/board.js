@@ -205,23 +205,23 @@ Board.prototype = {
   },
 
   // Rotate block about X-axis.
-  rotateBlockX: function(offset = 1) {
+  rotateBlockX: function() {
     if (!this.paused) {
-      this.block.rotateX(offset);
+      this.block.rotateX();
     }
   },
 
   // Rotate block about Y-axis.
-  rotateBlockY: function(offset = 1) {
+  rotateBlockY: function() {
     if (!this.paused) {
-      this.block.rotateY(offset);
+      this.block.rotateY();
     }
   },
 
   // Rotate block about Z-axis.
-  rotateBlockZ: function(offset = 1) {
+  rotateBlockZ: function() {
     if (!this.paused) {
-      this.block.rotateZ(offset);
+      this.block.rotateZ();
     }
   },
 
