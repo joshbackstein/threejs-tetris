@@ -44,7 +44,7 @@
   * ~~Rotate block about X-axis~~
   * ~~Rotate block about Y-axis~~
   * ~~Rotate block about Z-axis~~
-  * Pause the game
+  * ~~Pause the game~~
   * Toggle music
   * ~~Rotate camera clockwise around board~~
   * ~~Rotate camera counterclockwise around board~~
