@@ -106,28 +106,31 @@
         document.addEventListener("keydown", function(e) {
           console.log("keydown:", e.key);
           if (e.key == "ArrowUp" || e.key == "k" || e.key == "K") {
-            board.block.shiftX(-1);
+            board.shiftBlockX(-1);
           }
           if (e.key == "ArrowDown" || e.key == "j" || e.key == "J") {
-            board.block.shiftX(1);
+            board.shiftBlockX(1);
           }
           if (e.key == "ArrowLeft" || e.key == "h" || e.key == "H") {
-            board.block.shiftZ(1);
+            board.shiftBlockZ(1);
           }
           if (e.key == "ArrowRight" || e.key == "l" || e.key == "L") {
-            board.block.shiftZ(-1);
+            board.shiftBlockZ(-1);
           }
           if (e.key == " ") {
             dropCounter = dropThreshold;
           }
           if (e.key == "s" || e.key == "S") {
-            board.block.rotateX(1);
+            board.rotateBlockX(1);
           }
           if (e.key == "d" || e.key == "D") {
-            board.block.rotateY(1);
+            board.rotateBlockY(1);
           }
           if (e.key == "f" || e.key == "F") {
-            board.block.rotateZ(1);
+            board.rotateBlockZ(1);
+          }
+          if (e.key == "q" || e.key == "Q") {
+            board.togglePause();
           }
           if (e.key == "e" || e.key == "E") {
             cameraRot -= ROTATION_AMOUNT

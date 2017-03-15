@@ -31,6 +31,9 @@ var Board = function(size, height) {
   // By default, we'll keep playing the game.
   this.keepPlaying = true;
 
+  // Be default, the game is not paused.
+  this.paused = false;
+
   // We also want to keep track of which board we're using
   // so we can easily reset it.
   this.boardType = DEFAULT_BOARD;
@@ -97,9 +100,18 @@ Board.prototype = {
     this.setBoard(this.boardType);
   },
 
+  // Pause or unpause the game.
+  togglePause: function() {
+    // Toggled the pause flag.
+    this.paused = !this.paused;
+
+    // TODO: Display paused message on the screen.
+  },
+
   // Start the game.
   startGame: function() {
     this.keepPlaying = true;
+    this.paused = false;
   },
 
   // End the game.
@@ -110,6 +122,7 @@ Board.prototype = {
     if (this.keepPlaying) {
       // Set flag.
       this.keepPlaying = false;
+      this.paused = true;
 
       // Let us know the game has ended.
       console.log("Game over!");
@@ -167,6 +180,48 @@ Board.prototype = {
       this.parent.remove(cube.cube);
       this.parent.remove(cube.cubeOutline);
       this.grid[y][z][x] = 0;
+    }
+  },
+
+  // Shift block in X direction.
+  shiftBlockX: function(offset = 1) {
+    if (!this.paused) {
+      this.block.shiftX(offset);
+    }
+  },
+
+  // Shift block in Y direction.
+  shiftBlockY: function(offset = 1) {
+    if (!this.paused) {
+      this.block.shiftY(offset);
+    }
+  },
+
+  // Shift block in Z direction.
+  shiftBlockZ: function(offset = 1) {
+    if (!this.paused) {
+      this.block.shiftZ(offset);
+    }
+  },
+
+  // Rotate block about X-axis.
+  rotateBlockX: function(offset = 1) {
+    if (!this.paused) {
+      this.block.rotateX(offset);
+    }
+  },
+
+  // Rotate block about Y-axis.
+  rotateBlockY: function(offset = 1) {
+    if (!this.paused) {
+      this.block.rotateY(offset);
+    }
+  },
+
+  // Rotate block about Z-axis.
+  rotateBlockZ: function(offset = 1) {
+    if (!this.paused) {
+      this.block.rotateZ(offset);
     }
   },
 
@@ -397,7 +452,7 @@ Board.prototype = {
   // Advance the game.
   advance: function() {
     // We only want to advance things if the game hasn't ended.
-    if (this.keepPlaying) {
+    if (this.keepPlaying && !this.paused) {
       // If we don't have a block, add one.
       if (this.block == null) {
         var blockType = Math.floor(Math.random() * blocks.length);
