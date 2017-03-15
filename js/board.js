@@ -127,7 +127,7 @@ Board.prototype = {
       // Let us know the game has ended.
       console.log("Game over!");
 
-      // TODO: Add menu to restart game.
+      // TODO: Display game over message and add menu to restart game.
     }
   },
 
