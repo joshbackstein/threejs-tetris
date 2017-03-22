@@ -20,11 +20,11 @@
   * Add levels/speeds
   * Add music
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
-* **Boards**
-  * **Create**
-    * **Floor of board**
-  * **Draw**
-    * **Floor of board**
+* ~~Boards~~
+  * ~~Create~~
+    * ~~Floor of board~~
+  * ~~Draw~~
+    * ~~Floor of board~~
   * ~~Set~~
   * ~~Clear~~
 * ~~Blocks~~
