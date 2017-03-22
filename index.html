@@ -138,6 +138,12 @@
           if (e.key == "r" || e.key == "R") {
             cameraRot += ROTATION_AMOUNT;
           }
+          // TODO: Remove this.
+          if (e.key == "Escape") {
+            // Kill the game.
+            board.clear();
+            board.endGame();
+          }
         });
 
         // Attach the threeJS renderer to the HTML page
