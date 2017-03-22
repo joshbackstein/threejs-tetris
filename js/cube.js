@@ -5,14 +5,26 @@
 var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, attachments = {}) {
   // Create geometry and material for cube.
   var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
-  var cubeMaterial = new THREE.MeshPhongMaterial({
-    color: color,
-    shading: THREE.FlatShading,
-    polygonOffset: true,
-    polygonOffsetFactor: 1,
-    polygonOffsetUnits: 1,
-    wireframe: false
-  });
+  var cubeMaterial;
+  if (ADD_CUBE_TEXTURE) {
+    cubeMaterial = new THREE.MeshPhongMaterial({
+      map: THREE.ImageUtils.loadTexture("img/cube-face.png"),
+      shading: THREE.FlatShading,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      wireframe: false
+    });
+  } else {
+    cubeMaterial = new THREE.MeshPhongMaterial({
+      color: color,
+      shading: THREE.FlatShading,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      wireframe: false
+    });
+  }
 
   // Create mesh for cube.
   var cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
