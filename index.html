@@ -73,11 +73,7 @@
         // board by default.
         board = new Board(BOARD_SIZE, BOARD_HEIGHT);
         board = Object.defineProperty(board, "parent", {value: scene});
-        // TODO: Set default board.
-        //board.setBoard(DEFAULT_BOARD);
-        //board.setBoard(1);
-        // TODO: Board 4 (at index 3) is a test board for clearing blocks.
-        board.setBoard(3);
+        board.setBoard(DEFAULT_BOARD);
 
         // Add block to the scene.
         var randomBlock = Math.floor(Math.random() * blocks.length);
