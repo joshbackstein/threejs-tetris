@@ -63,10 +63,6 @@
         board.setBoard(DEFAULT_BOARD);
         board.addFloor();
 
-        // Add block to the scene.
-        var randomBlock = Math.floor(Math.random() * blocks.length);
-        board.addBlock(randomBlock);
-
         // Add grid helper to the scene.
         if (ADD_GRID_HELPER) {
           var gridSize = BOARD_SIZE * CUBE_SIZE;
