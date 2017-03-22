@@ -8,7 +8,7 @@ var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, att
   var cubeMaterial;
   if (ADD_CUBE_TEXTURE) {
     cubeMaterial = new THREE.MeshPhongMaterial({
-      map: THREE.ImageUtils.loadTexture("img/cube-face.png"),
+      map: THREE.ImageUtils.loadTexture(CUBE_TEXTURE_PATH),
       shading: THREE.FlatShading,
       polygonOffset: true,
       polygonOffsetFactor: 1,
