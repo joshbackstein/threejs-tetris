@@ -38,6 +38,10 @@ var Board = function(size, height) {
   // so we can easily reset it.
   this.boardType = DEFAULT_BOARD;
 
+  // We need to keep track of whether or not this board has
+  // a floor.
+  this.hasFloor = false;
+
   // We need a way to keep track of the current block.
   this.block = null;
   this.blockCounter = 0;
@@ -47,6 +51,33 @@ var Board = function(size, height) {
  */
 Board.prototype = {
   constructor: Board,
+
+  addFloor: function() {
+    // Only add the floor if we don't have one yet.
+    if (!this.hasFloor) {
+      // Set flag.
+      this.hasFloor = true;
+
+      // Add floor of board to the scene.
+      var floorSize = BOARD_SIZE * CUBE_SIZE;
+      var floorGeometry = new THREE.PlaneBufferGeometry(floorSize, floorSize, 1, 1);
+      var floorMaterial;
+      if (ADD_FLOOR_TEXTURE) {
+        floorMaterial = new THREE.MeshPhongMaterial({
+          map: THREE.ImageUtils.loadTexture("img/floor.jpg"),
+          side: THREE.DoubleSide
+        });
+      } else {
+        floorMaterial = new THREE.MeshPhongMaterial({
+          color: 0x444444,
+          side: THREE.DoubleSide
+        });
+      }
+      var floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
+      scene.add(floorMesh);
+      floorMesh.rotateX(-Math.PI / 2);
+    }
+  },
 
   clear: function() {
     // Board goes by layers, then rows along z-axis, then
