@@ -60,13 +60,21 @@
           // Add floor of board to the scene.
           var floorSize = BOARD_SIZE * CUBE_SIZE;
           var floorGeometry = new THREE.PlaneBufferGeometry(floorSize, floorSize, 1, 1);
-          var floorMaterial = new THREE.MeshPhongMaterial({
-            color: 0x444444,
-            side: THREE.DoubleSide
-          });
+          var floorMaterial;
+          if (ADD_FLOOR_TEXTURE) {
+            floorMaterial = new THREE.MeshPhongMaterial({
+              map: THREE.ImageUtils.loadTexture("img/floor.jpg"),
+              side: THREE.DoubleSide
+            });
+          } else {
+            floorMaterial = new THREE.MeshPhongMaterial({
+              color: 0x444444,
+              side: THREE.DoubleSide
+            });
+          }
           var floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
           scene.add(floorMesh);
-          floorMesh.rotateX(Math.PI / 2);
+          floorMesh.rotateX(-Math.PI / 2);
         }
 
         // Initialize board, then add it to the scene. We'll use the first
