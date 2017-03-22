@@ -61,10 +61,7 @@
         board = new Board(BOARD_SIZE, BOARD_HEIGHT);
         board = Object.defineProperty(board, "parent", {value: scene});
         board.setBoard(DEFAULT_BOARD);
-
-        if (ADD_FLOOR) {
-          board.addFloor();
-        }
+        board.addFloor();
 
         // Add block to the scene.
         var randomBlock = Math.floor(Math.random() * blocks.length);

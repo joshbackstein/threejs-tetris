@@ -4,7 +4,6 @@
 const TESTING = !true;
 const FLIP_BOARD = !true;
 const CORNER_CUBES = !true;
-const ADD_FLOOR = true;
 const ADD_FLOOR_TEXTURE = true;
 const ADD_CUBE_TEXTURE = true;
 const ADD_GRID_HELPER = !true;
