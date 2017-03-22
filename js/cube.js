@@ -5,26 +5,14 @@
 var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, attachments = {}) {
   // Create geometry and material for cube.
   var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
-  var cubeMaterial;
-  if (ADD_CUBE_TEXTURE) {
-    cubeMaterial = new THREE.MeshPhongMaterial({
-      map: THREE.ImageUtils.loadTexture(CUBE_TEXTURE_PATH),
-      shading: THREE.FlatShading,
-      polygonOffset: true,
-      polygonOffsetFactor: 1,
-      polygonOffsetUnits: 1,
-      wireframe: false
-    });
-  } else {
-    cubeMaterial = new THREE.MeshPhongMaterial({
-      color: color,
-      shading: THREE.FlatShading,
-      polygonOffset: true,
-      polygonOffsetFactor: 1,
-      polygonOffsetUnits: 1,
-      wireframe: false
-    });
-  }
+  var cubeMaterial = new THREE.MeshPhongMaterial({
+    color: color,
+    shading: THREE.FlatShading,
+    polygonOffset: true,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
+    wireframe: false
+  });
 
   // Create mesh for cube.
   var cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -158,6 +146,20 @@ Cube.prototype = {
     // Move it to the provided location.
     this.cube.position.set(newX, newY, newZ);
     this.cubeOutline.position.set(newX, newY, newZ);
+  },
+
+  // Update the texture if one has been loaded.
+  updateTexture: function() {
+    if (this.parent.ADD_CUBE_TEXTURE && this.blockNumber > 0) {
+      this.cube.material = new THREE.MeshPhongMaterial({
+        map: this.parent.cubeTexture,
+        shading: THREE.FlatShading,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+        wireframe: false
+      });
+    }
   },
 
   addToScene: function(scene) {

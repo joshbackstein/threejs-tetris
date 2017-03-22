@@ -83,6 +83,21 @@ var Board = function(size, height) {
       }
     }
   );
+
+  // Attempt to load a texture for the cubes.
+  this.ADD_CUBE_TEXTURE = false;
+  this.cubeLoader = new THREE.TextureLoader();
+  this.cubeLoader.load(
+    // Path to texture.
+    CUBE_TEXTURE_PATH,
+
+    // Function to run upon load completion.
+    function(texture) {
+      // Set flags and texture.
+      thisBoard.ADD_CUBE_TEXTURE = true;
+      thisBoard.cubeTexture = texture;
+    }
+  );
 };
 
 /* Prototype functions.
@@ -212,6 +227,7 @@ Board.prototype = {
       // Create cube, then add it to the board and the scene.
       var cube = new Cube(x, y, z, color, blockNumber, attachments);
       Object.defineProperty(cube, "parent", {value: this});
+      cube.updateTexture();
       this.grid[y][z][x] = cube;
       cube.addToScene(this.parent);
       return cube;
