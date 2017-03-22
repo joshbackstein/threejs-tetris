@@ -5,7 +5,6 @@
 var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, attachments = {}) {
   // Create geometry and material for cube.
   var cubeGeometry = new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE);
-  //var cubeMaterial = new THREE.MeshBasicMaterial({
   var cubeMaterial = new THREE.MeshPhongMaterial({
     color: color,
     shading: THREE.FlatShading,
