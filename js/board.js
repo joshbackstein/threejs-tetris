@@ -29,7 +29,7 @@ var Board = function(size, height) {
   }
 
   // By default, we'll keep playing the game.
-  this.keepPlaying = true;
+  this.keepPlaying = false;
 
   // Be default, the game is not paused.
   this.paused = false;
@@ -40,11 +40,49 @@ var Board = function(size, height) {
 
   // We need to keep track of whether or not this board has
   // a floor.
+  this.floor = null;
   this.hasFloor = false;
 
   // We need a way to keep track of the current block.
   this.block = null;
   this.blockCounter = 0;
+
+  // We need a reference to this board for the loader callback
+  // functions.
+  var thisBoard = this;
+
+  // We only want to let the game run after everything has
+  // been loaded or had an error loading.
+  var loadingManagerCallback = function() {
+    thisBoard.keepPlaying = true;
+  };
+  THREE.DefaultLoadingManager.onLoad = loadingManagerCallback;
+  THREE.DefaultLoadingManager.onError = loadingManagerCallback;
+
+  // Attempt to load a texture for the floor.
+  this.ADD_FLOOR_TEXTURE = false;
+  this.floorLoader = new THREE.TextureLoader();
+  this.floorLoader.load(
+    // Path to texture.
+    FLOOR_TEXTURE_PATH,
+
+    // Function to run upon load completion.
+    function(texture) {
+      // Set flags and texture.
+      thisBoard.ADD_FLOOR_TEXTURE = true;
+      thisBoard.floorTexture = texture;
+
+      // If the board has a floor, we want to update its material
+      // with the new texture.
+      if (thisBoard.hasFloor) {
+        var floorMaterial = new THREE.MeshPhongMaterial({
+          map: thisBoard.floorTexture,
+          side: THREE.DoubleSide
+        });
+        thisBoard.floor.material = floorMaterial;
+      }
+    }
+  );
 };
 
 /* Prototype functions.
@@ -58,13 +96,13 @@ Board.prototype = {
       // Set flag.
       this.hasFloor = true;
 
-      // Add floor of board to the scene.
+      // Add floor of board to the board and scene.
       var floorSize = BOARD_SIZE * CUBE_SIZE;
       var floorGeometry = new THREE.PlaneBufferGeometry(floorSize, floorSize, 1, 1);
       var floorMaterial;
-      if (ADD_FLOOR_TEXTURE) {
+      if (this.ADD_FLOOR_TEXTURE) {
         floorMaterial = new THREE.MeshPhongMaterial({
-          map: THREE.ImageUtils.loadTexture(FLOOR_TEXTURE_PATH),
+          map: this.floorTexture,
           side: THREE.DoubleSide
         });
       } else {
@@ -73,9 +111,9 @@ Board.prototype = {
           side: THREE.DoubleSide
         });
       }
-      var floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
-      scene.add(floorMesh);
-      floorMesh.rotateX(-Math.PI / 2);
+      this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      scene.add(this.floor);
+      this.floor.rotateX(-Math.PI / 2);
     }
   },
 
