@@ -64,7 +64,7 @@ Board.prototype = {
       var floorMaterial;
       if (ADD_FLOOR_TEXTURE) {
         floorMaterial = new THREE.MeshPhongMaterial({
-          map: THREE.ImageUtils.loadTexture("img/floor.jpg"),
+          map: THREE.ImageUtils.loadTexture(FLOOR_TEXTURE_PATH),
           side: THREE.DoubleSide
         });
       } else {
