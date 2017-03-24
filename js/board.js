@@ -34,6 +34,11 @@ var Board = function(size, height) {
   // By default, the game is not paused.
   this.paused = false;
 
+  // By default, the game will not play the music because we
+  // want to wait until the player starts the game to play
+  // the music.
+  this.playMusic = false;
+
   // We also want to keep track of which board we're using
   // so we can easily reset it.
   this.boardType = DEFAULT_BOARD;
@@ -58,6 +63,28 @@ var Board = function(size, height) {
   };
   THREE.DefaultLoadingManager.onLoad = loadingManagerCallback;
   THREE.DefaultLoadingManager.onError = loadingManagerCallback;
+
+  // Attempt to load music. To do this, we need to create
+  // listener and add it to the camera, then we need to create
+  // a global audio source.
+  var listener = new THREE.AudioListener();
+  camera.add(listener);
+  this.sound = new THREE.Audio(listener);
+  this.audioLoader = new THREE.AudioLoader();
+  this.audioLoader.load(
+    // Path to music.
+    "audio/theme.mp3",
+
+    // Function to run upon load completion.
+    function(buffer) {
+      // Set flags and sound.
+      thisBoard.ADD_MUSIC = true;
+      thisBoard.sound.setBuffer(buffer);
+      thisBoard.sound.setLoop(true);
+      thisBoard.sound.setVolume(0.5);
+      //thisBoard.sound.play();
+    }
+  );
 
   // Attempt to load a texture for the floor.
   this.ADD_FLOOR_TEXTURE = false;
@@ -190,6 +217,24 @@ Board.prototype = {
     this.paused = !this.paused;
 
     // TODO: Display paused message on the screen.
+  },
+
+  // Play or pause the music.
+  toggleMusic: function() {
+    // Play or pause the music based on the playMusic flag.
+    if (this.playMusic) {
+      // Toggle the flag.
+      this.playMusic = false;
+
+      // Pause the music.
+      this.sound.pause();
+    } else {
+      // Toggle the flag.
+      this.playMusic = true;
+
+      // Play the music.
+      this.sound.play();
+    }
   },
 
   // Start the game.
