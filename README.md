@@ -15,10 +15,10 @@
   * ~~Add block~~
   * ~~Remove completed layers~~
   * ~~Advance remaining layers after layer removal~~
-  * **Add controls**
+  * ~~Add controls~~
   * Add points
   * Add levels/speeds
-  * Add music
+  * ~~Add music~~
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
 * ~~Boards~~
   * ~~Create~~
@@ -34,10 +34,10 @@
 * ~~Cubes~~
   * ~~Create~~
   * ~~Add to board~~
-* **Music**
-  * **Create**
-  * Add to game
-* **Controls**
+* ~~Music~~
+  * ~~Create~~
+  * ~~Add to game~~
+* ~~Controls~~
   * ~~Move along X-axis~~
   * ~~Move along Z-axis~~
   * ~~Increase drop speed~~
@@ -45,7 +45,7 @@
   * ~~Rotate block about Y-axis~~
   * ~~Rotate block about Z-axis~~
   * ~~Pause the game~~
-  * Toggle music
+  * ~~Toggle music~~
   * ~~Rotate camera clockwise around board~~
   * ~~Rotate camera counterclockwise around board~~
 
