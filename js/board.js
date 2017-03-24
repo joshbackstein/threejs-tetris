@@ -31,7 +31,7 @@ var Board = function(size, height) {
   // By default, we'll keep playing the game.
   this.keepPlaying = false;
 
-  // Be default, the game is not paused.
+  // By default, the game is not paused.
   this.paused = false;
 
   // We also want to keep track of which board we're using
