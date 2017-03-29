@@ -15,9 +15,12 @@
   * ~~Add block~~
   * ~~Remove completed layers~~
   * ~~Advance remaining layers after layer removal~~
-  * ~~Add controls~~
-  * Add points
-  * Add levels/speeds
+  * **Add controls**
+  * **Add points**
+  * **Add starting menu**
+  * **Add pause screen**
+  * **Add game over menu**
+  * **Add levels/speeds**
   * ~~Add music~~
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
 * ~~Boards~~
@@ -37,7 +40,7 @@
 * ~~Music~~
   * ~~Create~~
   * ~~Add to game~~
-* ~~Controls~~
+* **Controls**
   * ~~Move along X-axis~~
   * ~~Move along Z-axis~~
   * ~~Increase drop speed~~
@@ -48,6 +51,7 @@
   * ~~Toggle music~~
   * ~~Rotate camera clockwise around board~~
   * ~~Rotate camera counterclockwise around board~~
+  * **Adjust controls depending on the camera angle**
 
 ## Usage
 
