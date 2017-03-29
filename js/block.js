@@ -316,9 +316,8 @@ Block.prototype = {
 
             // Can the cube be added here, or is another cube in the way?
             var willCollide = this.parent.checkCollision(bX, bY, bZ, this.blockNumber);
-            //if (cube == null) {
             if (willCollide) {
-              // If the cube is null, it couldn't be placed because a cube
+              // If the cube will collide, it can't be placed because a cube
               // is already there. If that happens, we're stacked too high
               // and need to end the game.
               this.parent.parent.endGame();
