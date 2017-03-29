@@ -28,12 +28,6 @@ var Board = function(size, height) {
     this.grid.push(layer);
   }
 
-  // By default, we'll keep playing the game.
-  this.keepPlaying = false;
-
-  // By default, the game is not paused.
-  this.paused = false;
-
   // By default, the game will not play the music because we
   // want to wait until the player starts the game to play
   // the music.
@@ -51,80 +45,6 @@ var Board = function(size, height) {
   // We need a way to keep track of the current block.
   this.block = null;
   this.blockCounter = 0;
-
-  // We need a reference to this board for the loader callback
-  // functions.
-  var thisBoard = this;
-
-  // We only want to let the game run after everything has
-  // been loaded or had an error loading.
-  var loadingManagerCallback = function() {
-    thisBoard.keepPlaying = true;
-  };
-  THREE.DefaultLoadingManager.onLoad = loadingManagerCallback;
-  THREE.DefaultLoadingManager.onError = loadingManagerCallback;
-
-  // Attempt to load music. To do this, we need to create
-  // listener and add it to the camera, then we need to create
-  // a global audio source.
-  var listener = new THREE.AudioListener();
-  camera.add(listener);
-  this.sound = new THREE.Audio(listener);
-  this.audioLoader = new THREE.AudioLoader();
-  this.audioLoader.load(
-    // Path to music.
-    "audio/theme.mp3",
-
-    // Function to run upon load completion.
-    function(buffer) {
-      // Set flags and sound.
-      thisBoard.ADD_MUSIC = true;
-      thisBoard.sound.setBuffer(buffer);
-      thisBoard.sound.setLoop(true);
-      thisBoard.sound.setVolume(0.5);
-      //thisBoard.sound.play();
-    }
-  );
-
-  // Attempt to load a texture for the floor.
-  this.ADD_FLOOR_TEXTURE = false;
-  this.floorLoader = new THREE.TextureLoader();
-  this.floorLoader.load(
-    // Path to texture.
-    FLOOR_TEXTURE_PATH,
-
-    // Function to run upon load completion.
-    function(texture) {
-      // Set flags and texture.
-      thisBoard.ADD_FLOOR_TEXTURE = true;
-      thisBoard.floorTexture = texture;
-
-      // If the board has a floor, we want to update its material
-      // with the new texture.
-      if (thisBoard.hasFloor) {
-        var floorMaterial = new THREE.MeshPhongMaterial({
-          map: thisBoard.floorTexture,
-          side: THREE.DoubleSide
-        });
-        thisBoard.floor.material = floorMaterial;
-      }
-    }
-  );
-
-  // Attempt to load a texture for the cubes.
-  this.ADD_CUBE_TEXTURE = false;
-  this.cubeLoader = new THREE.TextureLoader();
-  this.cubeLoader.load(
-    // Path to texture.
-    CUBE_TEXTURE_PATH,
-
-    // Function to run upon load completion.
-    function(texture) {
-      // Set flags and texture.
-      thisBoard.ADD_CUBE_TEXTURE = true;
-      thisBoard.cubeTexture = texture;
-    }
-  );
 };
 
 /* Prototype functions.
@@ -154,7 +74,7 @@ Board.prototype = {
         });
       }
       this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
-      scene.add(this.floor);
+      this.parent.scene.add(this.floor);
       this.floor.rotateX(-Math.PI / 2);
     }
   },
@@ -166,8 +86,8 @@ Board.prototype = {
       for (var z = 0; z < this.grid[y].length; z++) {
         for (var x = 0; x < this.grid[y][z].length; x++) {
           // Remove cube from scene and grid.
-          this.parent.remove(this.grid[y][z][x].cube);
-          this.parent.remove(this.grid[y][z][x].cubeOutline);
+          this.parent.scene.remove(this.grid[y][z][x].cube);
+          this.parent.scene.remove(this.grid[y][z][x].cubeOutline);
           this.grid[y][z][x] = 0;
         }
       }
@@ -211,59 +131,10 @@ Board.prototype = {
     this.setBoard(this.boardType);
   },
 
-  // Pause or unpause the game.
-  togglePause: function() {
-    // Toggled the pause flag.
-    this.paused = !this.paused;
-
-    // TODO: Display paused message on the screen.
-  },
-
-  // Play or pause the music.
-  toggleMusic: function() {
-    // Play or pause the music based on the playMusic flag.
-    if (this.playMusic) {
-      // Toggle the flag.
-      this.playMusic = false;
-
-      // Pause the music.
-      this.sound.pause();
-    } else {
-      // Toggle the flag.
-      this.playMusic = true;
-
-      // Play the music.
-      this.sound.play();
-    }
-  },
-
-  // Start the game.
-  startGame: function() {
-    this.keepPlaying = true;
-    this.paused = false;
-  },
-
-  // End the game.
-  endGame: function() {
-    // This will get called multiple times if multiple cubes collide
-    // when adding a new block, so we will only do this stuff for the
-    // first collision.
-    if (this.keepPlaying) {
-      // Set flag.
-      this.keepPlaying = false;
-      this.paused = true;
-
-      // Let us know the game has ended.
-      console.log("Game over!");
-
-      // TODO: Display game over message and add menu to restart game.
-    }
-  },
-
   addBlock: function(blockType = 1, x = 0, y = BOARD_HEIGHT - 1, z = 0) {
     this.block = new Block(blockType, this.blockCounter, x, y, z);
     Object.defineProperty(this.block, "parent", {value: this});
-    this.block.addToBoard(board);
+    this.block.addToBoard(this);
     this.blockCounter += 1;
   },
 
@@ -274,7 +145,7 @@ Board.prototype = {
       Object.defineProperty(cube, "parent", {value: this});
       cube.updateTexture();
       this.grid[y][z][x] = cube;
-      cube.addToScene(this.parent);
+      cube.addToScene(this.parent.scene);
       return cube;
     } else {
       // There was a collision, so return null to indicate that.
@@ -307,52 +178,40 @@ Board.prototype = {
       }
 
       // Remove it from the scene and the board.
-      this.parent.remove(cube.cube);
-      this.parent.remove(cube.cubeOutline);
+      this.parent.scene.remove(cube.cube);
+      this.parent.scene.remove(cube.cubeOutline);
       this.grid[y][z][x] = 0;
     }
   },
 
   // Shift block in X direction.
   shiftBlockX: function(offset = 1) {
-    if (!this.paused) {
-      this.block.shiftX(offset);
-    }
+    this.block.shiftX(offset);
   },
 
   // Shift block in Y direction.
   shiftBlockY: function(offset = 1) {
-    if (!this.paused) {
-      this.block.shiftY(offset);
-    }
+    this.block.shiftY(offset);
   },
 
   // Shift block in Z direction.
   shiftBlockZ: function(offset = 1) {
-    if (!this.paused) {
-      this.block.shiftZ(offset);
-    }
+    this.block.shiftZ(offset);
   },
 
   // Rotate block about X-axis.
   rotateBlockX: function() {
-    if (!this.paused) {
-      this.block.rotateX();
-    }
+    this.block.rotateX();
   },
 
   // Rotate block about Y-axis.
   rotateBlockY: function() {
-    if (!this.paused) {
-      this.block.rotateY();
-    }
+    this.block.rotateY();
   },
 
   // Rotate block about Z-axis.
   rotateBlockZ: function() {
-    if (!this.paused) {
-      this.block.rotateZ();
-    }
+    this.block.rotateZ();
   },
 
   // Check for collisions.
@@ -387,7 +246,7 @@ Board.prototype = {
       for (var z = 0; z < this.grid[y].length; z++) {
         for (var x = 0; x < this.grid[y][z].length; x++) {
           if (this.grid[y][z][x] != 0) {
-            this.grid[y][z][x].addToScene(this.parent);
+            this.grid[y][z][x].addToScene(this.parent.scene);
           }
         }
       }
@@ -581,35 +440,32 @@ Board.prototype = {
 
   // Advance the game.
   advance: function() {
-    // We only want to advance things if the game hasn't ended.
-    if (this.keepPlaying && !this.paused) {
-      // If we don't have a block, add one.
-      if (this.block == null) {
-        var blockType = Math.floor(Math.random() * blocks.length);
-        this.addBlock(blockType);
+    // If we don't have a block, add one.
+    if (this.block == null) {
+      var blockType = Math.floor(Math.random() * blocks.length);
+      this.addBlock(blockType);
+    }
+
+    // Advance the block.
+    var blockStopped = !this.block.shiftY(-1);
+
+    // We only want to check the layers when the block has stopped dropping.
+    if (blockStopped) {
+      // Check for layer completions and remove any completed layers.
+      var layersComplete = this.checkLayers();
+      while (layersComplete.length > 0) {
+        // If any layers were completed, we need to advance
+        // the layers before checking them again.
+        this.advanceLayers(layersComplete);
+        layersComplete = this.checkLayers();
       }
 
-      // Advance the block.
-      var blockStopped = !this.block.shiftY(-1);
+      // We need to drop a new block.
+      var blockType = Math.floor(Math.random() * blocks.length);
+      this.addBlock(blockType);
 
-      // We only want to check the layers when the block has stopped dropping.
-      if (blockStopped) {
-        // Check for layer completions and remove any completed layers.
-        var layersComplete = this.checkLayers();
-        while (layersComplete.length > 0) {
-          // If any layers were completed, we need to advance
-          // the layers before checking them again.
-          this.advanceLayers(layersComplete);
-          layersComplete = this.checkLayers();
-        }
-
-        // We need to drop a new block.
-        var blockType = Math.floor(Math.random() * blocks.length);
-        this.addBlock(blockType);
-
-        // Show us what the board looks like after we've advanced everything.
-        console.log(this);
-      }
+      // Show us what the board looks like after we've advanced everything.
+      console.log(this);
     }
   }
 };

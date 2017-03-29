@@ -321,7 +321,7 @@ Block.prototype = {
               // If the cube is null, it couldn't be placed because a cube
               // is already there. If that happens, we're stacked too high
               // and need to end the game.
-              this.parent.endGame();
+              this.parent.parent.endGame();
             } else {
               // We were able to add the cube, so set its ID.
               var cube = this.parent.addCube(bX, bY, bZ, this.color,

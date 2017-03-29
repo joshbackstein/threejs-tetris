@@ -11,6 +11,7 @@
 
     <script src="js/three.min.js"></script>
     <script src="js/constants.js"></script>
+    <script src="js/game.js"></script>
     <script src="js/board.js"></script>
     <script src="js/block.js"></script>
     <script src="js/cube.js"></script>
@@ -19,146 +20,10 @@
     <script>
       "use strict";
 
-      // Global variables.
-      var scene, camera, renderer;
-      var geometry, material, mesh;
-      var cameraRot = Math.PI / 4;
-      var board;
-      var dropThreshold = 100;
-      var dropCounter = 0;
-
-      init();
-      animate();
-
-      function init() {
-        // Create the main scene for the 3D drawing
-        scene = new THREE.Scene();
-
-        // Every scene needs a camera
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-        camera.position.y = CAMERA_Y;
-        camera.position.x = Math.sin(cameraRot) * CAMERA_X;
-        camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
-        //camera.lookAt(new THREE.Vector3(0, 0, 0));
-        camera.lookAt(new THREE.Vector3(CAMERA_POINT_X, CAMERA_POINT_Y, CAMERA_POINT_Z));
-
-        // Add light to the scene.
-        var ambientLight = new THREE.AmbientLight(0xf0f0f0);
-        scene.add(ambientLight);
-        // TODO: Add point lights.
-
-        // Add sky box to the scene.
-        var skyBoxGeometry = new THREE.BoxGeometry(5000, 5000, 5000);
-        var skyBoxMaterial = new THREE.MeshBasicMaterial({
-          color: 0x42c0fb,
-          side: THREE.BackSide
-        });
-        var skyBoxMesh = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
-        scene.add(skyBoxMesh);
-
-        // Initialize board, then add it to the scene. We'll use the first
-        // board by default.
-        board = new Board(BOARD_SIZE, BOARD_HEIGHT);
-        board = Object.defineProperty(board, "parent", {value: scene});
-        board.setBoard(DEFAULT_BOARD);
-        board.addFloor();
-
-        // Add grid helper to the scene.
-        if (ADD_GRID_HELPER) {
-          var gridSize = BOARD_SIZE * CUBE_SIZE;
-          var gridDivisions = BOARD_SIZE;
-          var gridHelper = new THREE.GridHelper(gridSize, gridDivisions, 0x000000, 0x000000);
-          scene.add(gridHelper);
-        }
-
-        // Add axis helper to the scene.
-        if (ADD_AXIS_HELPER) {
-          var axisLength = (BOARD_SIZE * CUBE_SIZE) / 2;
-          var axisHelper = new THREE.AxisHelper(axisLength);
-          scene.add(axisHelper);
-        }
-
-        // The renderer renders the scene using the objects, lights and camera.
-        renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        // Add keyboard listeners.
-        document.addEventListener("keydown", function(e) {
-          console.log("keydown:", e.key);
-          if (e.key == "ArrowUp" || e.key == "k" || e.key == "K") {
-            board.shiftBlockX(-1);
-          }
-          if (e.key == "ArrowDown" || e.key == "j" || e.key == "J") {
-            board.shiftBlockX(1);
-          }
-          if (e.key == "ArrowLeft" || e.key == "h" || e.key == "H") {
-            board.shiftBlockZ(1);
-          }
-          if (e.key == "ArrowRight" || e.key == "l" || e.key == "L") {
-            board.shiftBlockZ(-1);
-          }
-          if (e.key == " ") {
-            dropCounter = dropThreshold;
-          }
-          if (e.key == "s" || e.key == "S") {
-            board.rotateBlockX();
-          }
-          if (e.key == "d" || e.key == "D") {
-            board.rotateBlockY();
-          }
-          if (e.key == "f" || e.key == "F") {
-            board.rotateBlockZ();
-          }
-          if (e.key == "q" || e.key == "Q") {
-            board.togglePause();
-          }
-          if (e.key == "w" || e.key == "W") {
-            board.toggleMusic();
-          }
-          if (e.key == "e" || e.key == "E") {
-            cameraRot -= ROTATION_AMOUNT
-          }
-          if (e.key == "r" || e.key == "R") {
-            cameraRot += ROTATION_AMOUNT;
-          }
-          // TODO: Remove this.
-          if (e.key == "Escape") {
-            // Kill the game.
-            board.clear();
-            board.endGame();
-          }
-        });
-
-        // Attach the threeJS renderer to the HTML page
-        document.body.appendChild(renderer.domElement);
-      }
-
-      // This is the game/animation loop
-      function animate() {
-        // Get an animation frame to render.
-        requestAnimationFrame(animate);
-
-        // Move the camera
-        camera.position.y = CAMERA_Y;
-        camera.position.x = Math.sin(cameraRot) * CAMERA_X;
-        camera.position.z = Math.cos(cameraRot) * CAMERA_Z;
-        camera.lookAt(new THREE.Vector3(CAMERA_POINT_X, CAMERA_POINT_Y, CAMERA_POINT_Z));
-
-        // Move the blocks. To do this, we will incrase the drop
-        // counter each frame. When it reaches the threshold, the
-        // blocks will drop another level.
-        dropCounter += 1;
-        if (dropCounter >= dropThreshold) {
-          // Reset the counter.
-          dropCounter = 0;
-
-          // Advance the block.
-          board.advance();
-        }
-
-        // Render the scene.
-        renderer.render(scene, camera);
-      }
+      // Create game, initialize it, and run it.
+      var game = new Game();
+      game.init();
+      game.run();
     </script>
   </body>
 </html>
