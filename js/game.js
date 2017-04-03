@@ -143,12 +143,12 @@ Game.prototype = {
         }
         if (e.key == "e" || e.key == "E") {
           if (!thisGame.paused) {
-            thisGame.cameraRot -= ROTATION_AMOUNT
+            thisGame.rotateCamera(-ROTATION_AMOUNT);
           }
         }
         if (e.key == "r" || e.key == "R") {
           if (!thisGame.paused) {
-            thisGame.cameraRot += ROTATION_AMOUNT;
+            thisGame.rotateCamera(ROTATION_AMOUNT);
           }
         }
         // TODO: Remove this.
@@ -162,6 +162,21 @@ Game.prototype = {
 
     // Attach the threeJS renderer to the HTML page
     document.body.appendChild(this.renderer.domElement);
+  },
+
+  // Rotate the camera. We want to keep the angle at a value from 0
+  // to 2Pi.
+  rotateCamera: function(rotationAmount) {
+    // Rotate the camera.
+    this.cameraRot += rotationAmount;
+
+    // Make sure we're within the range.
+    if (this.cameraRot < 0) {
+      this.cameraRot += 2 * Math.PI;
+    }
+    if (this.cameraRot > 2 * Math.PI) {
+      this.cameraRot -= 2 * Math.PI;
+    }
   },
 
   // Load external resources.
