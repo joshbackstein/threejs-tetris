@@ -92,6 +92,9 @@ Board.prototype = {
         }
       }
     }
+
+    // Remove the current block.
+    this.block = null;
   },
 
   setBoard: function(i = 0) {
