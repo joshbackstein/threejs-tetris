@@ -13,7 +13,7 @@ var Game = function() {
   this.mesh = null;
 
   // Initialize some public variables.
-  this.cameraRot = Math.PI / 4;
+  this.cameraRot = 0;
   this.dropThreshold = 100;
   this.dropCounter = 0;
 
