@@ -97,42 +97,42 @@ Game.prototype = {
         console.log("keydown:", e.key);
         if (e.key == "ArrowUp" || e.key == "k" || e.key == "K") {
           if (!thisGame.paused) {
-            thisGame.board.shiftBlockX(-1);
+            thisGame.shiftBlockUp();
           }
         }
         if (e.key == "ArrowDown" || e.key == "j" || e.key == "J") {
           if (!thisGame.paused) {
-            thisGame.board.shiftBlockX(1);
+            thisGame.shiftBlockDown();
           }
         }
         if (e.key == "ArrowLeft" || e.key == "h" || e.key == "H") {
           if (!thisGame.paused) {
-            thisGame.board.shiftBlockZ(1);
+            thisGame.shiftBlockLeft();
           }
         }
         if (e.key == "ArrowRight" || e.key == "l" || e.key == "L") {
           if (!thisGame.paused) {
-            thisGame.board.shiftBlockZ(-1);
+            thisGame.shiftBlockRight();
           }
         }
         if (e.key == " ") {
           if (!thisGame.paused) {
-            thisGame.dropCounter = thisGame.dropThreshold;
+            thisGame.dropBlock();
           }
         }
         if (e.key == "s" || e.key == "S") {
           if (!thisGame.paused) {
-            thisGame.board.rotateBlockX();
+            thisGame.rotateBlockX();
           }
         }
         if (e.key == "d" || e.key == "D") {
           if (!thisGame.paused) {
-            thisGame.board.rotateBlockY();
+            thisGame.rotateBlockY();
           }
         }
         if (e.key == "f" || e.key == "F") {
           if (!thisGame.paused) {
-            thisGame.board.rotateBlockZ();
+            thisGame.rotateBlockZ();
           }
         }
         if (e.key == "q" || e.key == "Q") {
@@ -162,6 +162,102 @@ Game.prototype = {
 
     // Attach the threeJS renderer to the HTML page
     document.body.appendChild(this.renderer.domElement);
+  },
+
+  // Move block up.
+  shiftBlockUp: function() {
+    // The block needs to be shifted the correct direction based on
+    // the angle.
+    if (this.cameraRot >= Math.PI / 4 && this.cameraRot < (3 * Math.PI) / 4) {
+      // Pi / 4 <= x < 3Pi / 4
+      this.board.shiftBlockX(-1);
+    } else if (this.cameraRot >= (3 * Math.PI) / 4 && this.cameraRot < (5 * Math.PI) / 4) {
+      // 3Pi / 4 <= x < 5Pi / 4
+      this.board.shiftBlockZ(1);
+    } else if (this.cameraRot >= (5 * Math.PI) / 4 && this.cameraRot < (7 * Math.PI) / 4) {
+      // 5Pi / 4 <= x < 7Pi / 4
+      this.board.shiftBlockX(1);
+    } else {
+      // -Pi / 4 <= x < Pi / 4
+      this.board.shiftBlockZ(-1);
+    }
+  },
+
+  // Move block down.
+  shiftBlockDown: function() {
+    // The block needs to be shifted the correct direction based on
+    // the angle.
+    if (this.cameraRot >= Math.PI / 4 && this.cameraRot < (3 * Math.PI) / 4) {
+      // Pi / 4 <= x < 3Pi / 4
+      this.board.shiftBlockX(1);
+    } else if (this.cameraRot >= (3 * Math.PI) / 4 && this.cameraRot < (5 * Math.PI) / 4) {
+      // 3Pi / 4 <= x < 5Pi / 4
+      this.board.shiftBlockZ(-1);
+    } else if (this.cameraRot >= (5 * Math.PI) / 4 && this.cameraRot < (7 * Math.PI) / 4) {
+      // 5Pi / 4 <= x < 7Pi / 4
+      this.board.shiftBlockX(-1);
+    } else {
+      // -Pi / 4 <= x < Pi / 4
+      this.board.shiftBlockZ(1);
+    }
+  },
+
+  // Move block left.
+  shiftBlockLeft: function() {
+    // The block needs to be shifted the correct direction based on
+    // the angle.
+    if (this.cameraRot >= Math.PI / 4 && this.cameraRot < (3 * Math.PI) / 4) {
+      // Pi / 4 <= x < 3Pi / 4
+      this.board.shiftBlockZ(1);
+    } else if (this.cameraRot >= (3 * Math.PI) / 4 && this.cameraRot < (5 * Math.PI) / 4) {
+      // 3Pi / 4 <= x < 5Pi / 4
+      this.board.shiftBlockX(1);
+    } else if (this.cameraRot >= (5 * Math.PI) / 4 && this.cameraRot < (7 * Math.PI) / 4) {
+      // 5Pi / 4 <= x < 7Pi / 4
+      this.board.shiftBlockZ(-1);
+    } else {
+      // -Pi / 4 <= x < Pi / 4
+      this.board.shiftBlockX(-1);
+    }
+  },
+
+  // Move block right.
+  shiftBlockRight: function() {
+    // The block needs to be shifted the correct direction based on
+    // the angle.
+    if (this.cameraRot >= Math.PI / 4 && this.cameraRot < (3 * Math.PI) / 4) {
+      // Pi / 4 <= x < 3Pi / 4
+      this.board.shiftBlockZ(-1);
+    } else if (this.cameraRot >= (3 * Math.PI) / 4 && this.cameraRot < (5 * Math.PI) / 4) {
+      // 3Pi / 4 <= x < 5Pi / 4
+      this.board.shiftBlockX(-1);
+    } else if (this.cameraRot >= (5 * Math.PI) / 4 && this.cameraRot < (7 * Math.PI) / 4) {
+      // 5Pi / 4 <= x < 7Pi / 4
+      this.board.shiftBlockZ(1);
+    } else {
+      // -Pi / 4 <= x < Pi / 4
+      this.board.shiftBlockX(1);
+    }
+  },
+
+  // Drop block one level.
+  dropBlock: function() {
+    this.dropCounter = this.dropThreshold;
+  },
+
+  // Rotate block about x-axis.
+  rotateBlockX: function() {
+    this.board.rotateBlockX();
+  },
+
+  // Rotate block about y-axis.
+  rotateBlockY: function() {
+    this.board.rotateBlockY();
+  },
+
+  // Rotate block about z-axis.
+  rotateBlockZ: function() {
+    this.board.rotateBlockZ();
   },
 
   // Rotate the camera. We want to keep the angle at a value from 0
