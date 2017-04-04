@@ -141,6 +141,11 @@ Board.prototype = {
     this.blockCounter += 1;
   },
 
+  addRandomBlock: function() {
+    var blockType = Math.floor(Math.random() * blocks.length);
+    this.addBlock(blockType);
+  },
+
   addCube: function(x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = this.blockCounter, attachments = {}) {
     if (!this.checkCollision(x, y, z, blockNumber)) {
       // Create cube, then add it to the board and the scene.
@@ -445,8 +450,7 @@ Board.prototype = {
   advance: function() {
     // If we don't have a block, add one.
     if (this.block == null) {
-      var blockType = Math.floor(Math.random() * blocks.length);
-      this.addBlock(blockType);
+      this.addRandomBlock();
     }
 
     // Advance the block.
@@ -464,8 +468,7 @@ Board.prototype = {
       }
 
       // We need to drop a new block.
-      var blockType = Math.floor(Math.random() * blocks.length);
-      this.addBlock(blockType);
+      this.addRandomBlock();
 
       // Show us what the board looks like after we've advanced everything.
       console.log(this);
