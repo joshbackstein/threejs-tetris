@@ -292,6 +292,10 @@ Board.prototype = {
             }
           }
         }
+
+        // Whenever a layer is completed, we also want to increment the
+        // game's level counter.
+        this.parent.incrementLevelCounter();
       }
     }
 

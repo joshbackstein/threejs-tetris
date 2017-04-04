@@ -14,12 +14,22 @@ var Game = function() {
 
   // Initialize some public variables.
   this.cameraRot = 0;
-  this.dropThreshold = 100;
+  this.dropThreshold = 80;
   this.dropCounter = 0;
 
   // Initialize some flags.
   this.initialized = false;
   this.keysAreBound = false;
+
+  // We want to keep track of the score and level. The level
+  // counter increases every time a line is cleared, and the
+  // level increases every time the counter reaches 3. The
+  // speed modifier is changed to 70% of its current value
+  // for every two levels that have been reached.
+  this.score = 0;
+  this.level = 0;
+  this.levelCounter = 0;
+  this.speedModifier = 1;
 };
 
 /* Prototype functions.
@@ -413,6 +423,49 @@ Game.prototype = {
     }
   },
 
+  // Increment the level counter. If the counter reaches 3,
+  // we will reset it, increase the level and score. The speed
+  // of the game is increased every two levels.
+  incrementLevelCounter: function() {
+    // Increase score.
+    this.score += 1000;
+
+    // Increase level counter.
+    this.levelCounter++;
+
+    // Do we need to increase the level?
+    if (this.levelCounter >= 3) {
+      // Reset the counter.
+      this.levelCounter = 0;
+
+      // Increase the level.
+      this.level++;
+
+      // Do we need to increase the speed?
+      if (this.level % 2 == 0 && this.speedModifier > MINIMUM_SPEED_MODIFIER) {
+        this.speedModifier *= 0.70;
+
+        // Update the speed of the music.
+        if (this.speedModifier < 1) {
+          this.sound.setPlaybackRate(this.sound.playbackRate + 0.02);
+        }
+      }
+
+      // Speed modifier should only get as low as the minimum
+      // speed modifer threshold.
+      if (this.speedModifier < MINIMUM_SPEED_MODIFIER) {
+        this.speedModifier = MINIMUM_SPEED_MODIFIER;
+      }
+    }
+
+    // TODO: Remove this.
+    console.log("Score:", this.score);
+    console.log("Level:", this.level);
+    console.log("Level Counter:", this.levelCounter);
+    console.log("Speed Modifier:", this.speedModifier);
+    console.log("Sound Playback Rate:", this.sound.playbackRate);
+  },
+
   // This is the game/animation loop
   animate: function() {
     // Get an animation frame to render.
@@ -434,7 +487,7 @@ Game.prototype = {
       // counter each frame. When it reaches the threshold, the
       // blocks will drop another level.
       this.dropCounter += 1;
-      if (this.dropCounter >= this.dropThreshold) {
+      if (this.dropCounter >= Math.floor(this.dropThreshold * this.speedModifier)) {
         // Reset the counter.
         this.dropCounter = 0;
 
