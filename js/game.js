@@ -69,7 +69,6 @@ Game.prototype = {
     // Initialize board, then add it to the scene. We'll use the first
     // board by default.
     this.board = new Board(BOARD_SIZE, BOARD_HEIGHT);
-    // TODO Check on this
     this.board = Object.defineProperty(this.board, "parent", {value: this});
     this.board.setBoard(DEFAULT_BOARD);
     this.board.addFloor();
