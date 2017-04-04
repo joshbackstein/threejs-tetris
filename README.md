@@ -16,13 +16,19 @@
   * ~~Remove completed layers~~
   * ~~Advance remaining layers after layer removal~~
   * ~~Add controls~~
-  * **Add points**
-  * **Add starting menu**
-  * **Add pause screen**
-  * **Add game over menu**
-  * **Add levels/speeds**
+  * ~~Add points~~
+  * ~~Add levels/speeds~~
   * ~~Add music~~
+  * **Add UI**
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
+* **UI**
+  * **Level**
+  * **Points**
+  * **Controls**
+  * **Toggle music**
+  * **Starting menu**
+  * **Pause screen**
+  * **Game over menu**
 * ~~Boards~~
   * ~~Create~~
     * ~~Floor of board~~
