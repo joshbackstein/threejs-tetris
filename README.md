@@ -22,10 +22,10 @@
   * **Add UI**
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
 * **UI**
-  * **Level**
-  * **Points**
-  * **Controls**
-  * **Toggle music**
+  * ~~Level~~
+  * ~~Points~~
+  * ~~Controls~~
+  * ~~Toggle music~~
   * **Starting menu**
   * **Pause screen**
   * **Game over menu**
