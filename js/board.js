@@ -142,8 +142,12 @@ Board.prototype = {
   },
 
   addRandomBlock: function() {
-    var blockType = Math.floor(Math.random() * blocks.length);
-    this.addBlock(blockType);
+    if (this.parent.debugMode) {
+      this.addBlock(0);
+    } else {
+      var blockType = Math.floor(Math.random() * blocks.length);
+      this.addBlock(blockType);
+    }
   },
 
   addCube: function(

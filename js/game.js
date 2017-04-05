@@ -34,6 +34,9 @@ var Game = function() {
   this.level = 0;
   this.levelCounter = 0;
   this.speedModifier = 1;
+
+  // Debug functions.
+  this.debugMode = false;
 };
 
 /* Prototype functions.
@@ -424,6 +427,22 @@ Game.prototype = {
       // Play the music.
       this.sound.play();
     }
+  },
+
+  // Toggle debug mode.
+  toggleDebugMode: function() {
+    if (this.debugMode) {
+      this.debugMode = false;
+
+      this.board.setBoard(DEFAULT_BOARD);
+    } else {
+      this.debugMode = true;
+
+      this.board.setBoard(3);
+    }
+
+    this.endGame();
+    this.startGame();
   },
 
   // Increment the level counter. If the counter reaches 3,
