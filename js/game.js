@@ -12,6 +12,10 @@ var Game = function() {
   this.material = null;
   this.mesh = null;
 
+  // We need to be able to access a couple DOM elements.
+  this.levelLabel = document.getElementById("level-label");
+  this.pointsLabel = document.getElementById("points-label");
+
   // Initialize some public variables.
   this.cameraRot = 0;
   this.dropThreshold = 80;
@@ -463,6 +467,10 @@ Game.prototype = {
     console.log("Level Counter:", this.levelCounter);
     console.log("Speed Modifier:", this.speedModifier);
     console.log("Sound Playback Rate:", this.sound.playbackRate);
+
+    // Update the level and points labels.
+    this.levelLabel.innerHTML = "Level " + (this.level + 1);
+    this.pointsLabel.innerHTML = "Points: " + this.score;
   },
 
   // This is the game/animation loop

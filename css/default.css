@@ -1,0 +1,63 @@
+html, body {
+  margin: 0;
+}
+
+body {
+  font-family: "sans-serif";
+}
+
+canvas {
+  height: 100%;
+  width: 100%;
+}
+
+#ui {
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+}
+
+#ui h1 {
+  font-size: 36pt;
+  text-align: center;
+}
+
+#ui #controls {
+  background: rgba(64, 64, 64, 0.5);
+  border-radius: 5px;
+  box-sizing: border-box;
+  left: 1em;
+  padding: 1em;
+  position: absolute;
+  width: 30em;
+}
+
+#ui #controls h3 {
+  text-align: center;
+}
+
+#ui #controls .control-description {
+  margin-left: 1em;
+}
+
+#ui #game-info {
+  background: rgba(64, 64, 64, 0.5);
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 1em;
+  position: absolute;
+  right: 1em;
+  width: 30em;
+}
+
+#ui #game-info h2,
+#ui #game-info h3 {
+  text-align: center;
+}
+
+#ui #game-info p:hover {
+  color: #333;
+  cursor: pointer;
+}
