@@ -384,6 +384,13 @@ Game.prototype = {
   startGame: function() {
     this.keepPlaying = true;
     this.paused = false;
+
+    // Reset everything.
+    this.score = 0;
+    this.level = 0;
+    this.levelCounter = 0;
+    this.speedModifier = 1;
+    this.sound.setPlaybackRate(1);
   },
 
   // End the game.
