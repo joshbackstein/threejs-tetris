@@ -448,6 +448,7 @@ Game.prototype = {
       this.board.setBoard(3);
     }
 
+    // We're starting over, so restart the game.
     this.endGame();
     this.startGame();
   },
