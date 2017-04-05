@@ -146,7 +146,15 @@ Board.prototype = {
     this.addBlock(blockType);
   },
 
-  addCube: function(x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = this.blockCounter, attachments = {}) {
+  addCube: function(
+    x = 0
+    , y = 0
+    , z = 0
+    , color = 0xffffff
+    , blockNumber = this.blockCounter
+    , attachments = {}
+    )
+  {
     if (!this.checkCollision(x, y, z, blockNumber)) {
       // Create cube, then add it to the board and the scene.
       var cube = new Cube(x, y, z, color, blockNumber, attachments);
