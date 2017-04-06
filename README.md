@@ -11,7 +11,7 @@
 
 ### List:
 
-* **Game**
+* ~~Game~~
   * ~~Add block~~
   * ~~Remove completed layers~~
   * ~~Advance remaining layers after layer removal~~
@@ -20,6 +20,7 @@
   * ~~Add levels/speeds~~
   * ~~Add music~~
   * ~~Add UI~~
+  * ~~Canadian mode~~
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
 * ~~UI~~
   * ~~Level~~
@@ -59,6 +60,7 @@
   * ~~Rotate camera clockwise around board~~
   * ~~Rotate camera counterclockwise around board~~
   * ~~Adjust controls depending on the camera angle~~
+  * ~~Toggle Canadian mode~~
 
 ## Usage
 
@@ -77,3 +79,4 @@
 | `W`            | Toggle music                                  |
 | `E`            | Rotate camera clockwise around board          |
 | `R`            | Rotate camera counterclockwise around board   |
+| `C`            | Toggle Canadian mode                          |
