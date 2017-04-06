@@ -19,16 +19,16 @@
   * ~~Add points~~
   * ~~Add levels/speeds~~
   * ~~Add music~~
-  * **Add UI**
+  * ~~Add UI~~
   * ~~End game when blocks are stacked too tall for new blocks to be added~~
-* **UI**
+* ~~UI~~
   * ~~Level~~
   * ~~Points~~
   * ~~Controls~~
   * ~~Toggle music~~
-  * **Starting menu**
-  * **Pause screen**
-  * **Game over menu**
+  * ~~Starting menu~~
+  * ~~Pause screen~~
+  * ~~Game over menu~~
 * ~~Boards~~
   * ~~Create~~
     * ~~Floor of board~~
