@@ -307,16 +307,6 @@ Game.prototype = {
     // functions.
     var thisGame = this;
 
-    // We only want to let the game run after everything has
-    // been loaded or had an error loading.
-    var loadingManagerCallback = function() {
-      // TODO Change this to progress to the game after reaching it.
-      //thisGame.keepPlaying = true;
-      //thisGame.paused = false;
-    };
-
-    THREE.DefaultLoadingManager.onLoad = loadingManagerCallback;
-    THREE.DefaultLoadingManager.onError = loadingManagerCallback;
     // Attempt to load music. To do this, we need to create a listener
     // and add it to the camera, then we need to create a global audio
     // source.
