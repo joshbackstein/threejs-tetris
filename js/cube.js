@@ -28,8 +28,9 @@ var Cube = function (x = 0, y = 0, z = 0, color = 0xffffff, blockNumber = 0, att
     cubeOutlineMaterial
     );
 
-  // Set cube and outline meshes, their positions, and the block
-  // number this cube is associated with.
+  // Set color, cube and outline meshes, their positions, and
+  // the block number this cube is associated with.
+  this.color = color;
   this.cube = cubeMesh;
   this.cubeOutline = cubeOutlineLineSegments;
   this.x = x;
@@ -160,6 +161,18 @@ Cube.prototype = {
         wireframe: false
       });
     }
+  },
+
+  // Reset the texture to the color for this cube.
+  resetTexture: function() {
+    this.cube.material = new THREE.MeshPhongMaterial({
+      color: this.color,
+      shading: THREE.FlatShading,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      wireframe: false
+    });
   },
 
   addToScene: function(scene) {

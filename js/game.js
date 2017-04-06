@@ -39,6 +39,9 @@ var Game = function() {
   this.levelCounter = 0;
   this.speedModifier = 1;
 
+  // Canadian mode.
+  this.canadianMode = false;
+
   // Debug mode.
   this.debugMode = false;
 };
@@ -176,6 +179,9 @@ Game.prototype = {
         }
         if (e.key == "Escape") {
           thisGame.endGame();
+        }
+        if (e.key == "c" || e.key == "C") {
+          thisGame.toggleCanadianMode();
         }
       });
     }
@@ -346,8 +352,8 @@ Game.prototype = {
         thisGame.board.floorTexture = texture;
 
         // If the board has a floor, we want to update its material
-        // with the new texture.
-        if (thisGame.board.hasFloor) {
+        // with the new texture if we're in Canadian mode.
+        if (thisGame.board.hasFloor && thisGame.canadianMode) {
           var floorMaterial = new THREE.MeshPhongMaterial({
             map: thisGame.board.floorTexture,
             side: THREE.DoubleSide
@@ -611,6 +617,23 @@ Game.prototype = {
       if (!this.paused) {
         this.sound.play();
       }
+    }
+  },
+
+  // Toggle Canadian mode.
+  toggleCanadianMode: function() {
+    if (this.canadianMode) {
+      // Toggle the flag.
+      this.canadianMode = false;
+
+      // Unset Canadian mode on the board.
+      this.board.unsetCanadianMode();
+    } else {
+      // Toggle the flag.
+      this.canadianMode = true;
+
+      // Set Canadian mode on the board.
+      this.board.setCanadianMode();
     }
   },
 

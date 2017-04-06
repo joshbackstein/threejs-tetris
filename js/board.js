@@ -79,6 +79,48 @@ Board.prototype = {
     }
   },
 
+  setCanadianMode() {
+    // Change the floor texture.
+    if (this.ADD_FLOOR_TEXTURE) {
+      var floorMaterial = new THREE.MeshPhongMaterial({
+        map: this.floorTexture,
+        side: THREE.DoubleSide
+      });
+      this.floor.material = floorMaterial;
+    }
+
+    // Change the cube textures.
+    for (var y = 0; y < this.grid.length; y++) {
+      for (var z = 0; z < this.grid[y].length; z++) {
+        for (var x = 0; x < this.grid[y][z].length; x++) {
+          if (this.grid[y][z][x] != 0) {
+            this.grid[y][z][x].updateTexture();
+          }
+        }
+      }
+    }
+  },
+
+  unsetCanadianMode() {
+    // Change the floor texture.
+    var floorMaterial = new THREE.MeshPhongMaterial({
+      color: 0x444444,
+      side: THREE.DoubleSide
+    });
+    this.floor.material = floorMaterial;
+
+    // Change the cube textures.
+    for (var y = 0; y < this.grid.length; y++) {
+      for (var z = 0; z < this.grid[y].length; z++) {
+        for (var x = 0; x < this.grid[y][z].length; x++) {
+          if (this.grid[y][z][x] != 0) {
+            this.grid[y][z][x].resetTexture();
+          }
+        }
+      }
+    }
+  },
+
   clear: function() {
     // Board goes by layers, then rows along z-axis, then
     // columns along x-axis.
@@ -163,7 +205,9 @@ Board.prototype = {
       // Create cube, then add it to the board and the scene.
       var cube = new Cube(x, y, z, color, blockNumber, attachments);
       Object.defineProperty(cube, "parent", {value: this});
-      cube.updateTexture();
+      if (this.parent.canadianMode) {
+        cube.updateTexture();
+      }
       this.grid[y][z][x] = cube;
       cube.addToScene(this.parent.scene);
       return cube;
