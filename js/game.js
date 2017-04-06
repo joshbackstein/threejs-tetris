@@ -39,7 +39,7 @@ var Game = function() {
   this.levelCounter = 0;
   this.speedModifier = 1;
 
-  // Debug functions.
+  // Debug mode.
   this.debugMode = false;
 };
 
