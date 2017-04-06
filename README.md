@@ -54,6 +54,7 @@
   * ~~Rotate block about Y-axis~~
   * ~~Rotate block about Z-axis~~
   * ~~Pause the game~~
+  * ~~Quit the game~~
   * ~~Toggle music~~
   * ~~Rotate camera clockwise around board~~
   * ~~Rotate camera counterclockwise around board~~
@@ -72,6 +73,7 @@
 | `Space`        | Increase drop speed                           |
 | `S`, `D`, `F`  | Rotate block about X-axis, Y-axis, and Z-axis |
 | `Q`            | Pause the game                                |
+| `Escape`       | Quit the game                                 |
 | `W`            | Toggle music                                  |
 | `E`            | Rotate camera clockwise around board          |
 | `R`            | Rotate camera counterclockwise around board   |
