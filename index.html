@@ -21,8 +21,35 @@
       <div id="game-info">
         <h2 id="level-label">Level 1</h2>
         <h3 id="points-label">Points: 0<h3>
-        <p onclick="game.toggleMusic();">Toggle Music</p>
-        <p onclick="game.toggleDebugMode();">Toggle Debug Mode</p>
+        <p><span class="button" onclick="game.toggleMusic();">Toggle Music</span></p>
+        <p><span class="button" onclick="game.toggleDebugMode();">Toggle Debug Mode</span></p>
+      </div>
+
+      <div id="overlay" class="hidden">
+        <div id="overlay-start-game" class="hidden">
+          <h1>New Game</h1>
+        </div>
+
+        <div id="overlay-paused" class="hidden">
+          <h1>PAUSED</h1>
+        </div>
+
+        <div id="overlay-game-over" class="hidden">
+          <h1>GAME OVER</h1>
+        </div>
+
+        <div id="overlay-board-selector" class="hidden">
+          <p>Select board type:</p>
+          <div class="style-select">
+            <select onchange="game.setBoard(this.value);">
+              <option value="0">Default</option>
+              <option value="1">Cross</option>
+              <option value="2">Striped</option>
+            </select>
+          </div>
+
+          <p id="overlay-play-button"><span class="button" onclick="game.startGame();">Play</span></p>
+        </div>
       </div>
     </div>
 

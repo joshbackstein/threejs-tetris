@@ -20,10 +20,14 @@ var Game = function() {
   this.cameraRot = 0;
   this.dropThreshold = 80;
   this.dropCounter = 0;
+  this.keepPlaying = false;
+  this.paused = true;
+  this.boardType = DEFAULT_BOARD;
 
   // Initialize some flags.
   this.initialized = false;
   this.keysAreBound = false;
+  this.playMusic = true;
 
   // We want to keep track of the score and level. The level
   // counter increases every time a line is cleared, and the
@@ -48,6 +52,9 @@ Game.prototype = {
   init: function() {
     // Set the flag.
     this.initialized = true;
+
+    // Show the start menu.
+    this.showStartGameMenu();
 
     // Create the main scene for the 3D drawing
     this.scene = new THREE.Scene();
@@ -301,8 +308,8 @@ Game.prototype = {
     // been loaded or had an error loading.
     var loadingManagerCallback = function() {
       // TODO Change this to progress to the game after reaching it.
-      thisGame.keepPlaying = true;
-      thisGame.paused = false;
+      //thisGame.keepPlaying = true;
+      //thisGame.paused = false;
     };
 
     THREE.DefaultLoadingManager.onLoad = loadingManagerCallback;
@@ -369,6 +376,123 @@ Game.prototype = {
     );
   },
 
+  // Show DOM node.
+  showNode: function(node = null) {
+    if (node != null) {
+      // If it's hidden, unhide it.
+      if (node.className.indexOf("hidden") >= 0) {
+        node.className = node.className.replace("hidden", "").trim();
+      }
+    }
+  },
+
+  // Hide DOM node.
+  hideNode: function(node = null) {
+    if (node != null) {
+      // If it's showing, hide it.
+      if (node.className.indexOf("hidden") < 0) {
+        node.className = node.className + " hidden";
+        node.className = node.className.trim();
+      }
+    }
+  },
+
+  // Show start game title.
+  showStartGameOverlay: function() {
+    // Get element and display it.
+    var node = document.getElementById("overlay-start-game");
+    this.showNode(node);
+  },
+
+  // Hide start game title.
+  hideStartGameOverlay: function() {
+    // Get element and hide it.
+    var node = document.getElementById("overlay-start-game");
+    this.hideNode(node);
+  },
+
+  // Show paused title.
+  showPausedOverlay: function() {
+    // Get element and display it.
+    var node = document.getElementById("overlay-paused");
+    this.showNode(node);
+  },
+
+  // Hide paused title.
+  hidePausedOverlay: function() {
+    // Get element and hide it.
+    var node = document.getElementById("overlay-paused");
+    this.hideNode(node);
+  },
+
+  // Show game over title.
+  showGameOverOverlay: function() {
+    // Get element and display it.
+    var node = document.getElementById("overlay-game-over");
+    this.showNode(node);
+  },
+
+  // Hide game over title.
+  hideGameOverOverlay: function() {
+    // Get element and hide it.
+    var node = document.getElementById("overlay-game-over");
+    this.hideNode(node);
+  },
+
+  // Show board selector.
+  showBoardSelectorOverlay: function() {
+    // Get element and display it.
+    var node = document.getElementById("overlay-board-selector");
+    this.showNode(node);
+  },
+
+  // Hide board selector.
+  hideBoardSelectorOverlay: function() {
+    // Get element and hide it.
+    var node = document.getElementById("overlay-board-selector");
+    this.hideNode(node);
+  },
+
+  // Show menu/message overlay.
+  showOverlay: function() {
+    // Get the overlay and display it.
+    var overlay = document.getElementById("overlay");
+    this.showNode(overlay);
+
+    // Hide the child elements.
+    this.hideStartGameOverlay();
+    this.hidePausedOverlay();
+    this.hideGameOverOverlay();
+    this.hideBoardSelectorOverlay();
+  },
+
+  // Hide menu/message overlay.
+  hideOverlay: function() {
+    // Get the overlay and display it.
+    var overlay = document.getElementById("overlay");
+    this.hideNode(overlay);
+  },
+
+  // Show the start game sceen.
+  showStartGameMenu: function() {
+    this.showOverlay();
+    this.showStartGameOverlay();
+    this.showBoardSelectorOverlay();
+  },
+
+  // Show the pause screen.
+  showPauseMenu: function() {
+    this.showOverlay();
+    this.showPausedOverlay();
+  },
+
+  // Show the game over screen.
+  showGameOverMenu: function() {
+    this.showOverlay();
+    this.showGameOverOverlay();
+    this.showBoardSelectorOverlay();
+  },
+
   // Run the game.
   run: function() {
     // If the game isn't initialized yet, initialize it.
@@ -391,6 +515,15 @@ Game.prototype = {
     this.levelCounter = 0;
     this.speedModifier = 1;
     this.sound.setPlaybackRate(1);
+    this.board.reset();
+
+    // Play the music if it is supposed to be playing.
+    if (this.playMusic) {
+      this.sound.play();
+    }
+
+    // Remove the overlay.
+    this.hideOverlay();
   },
 
   // End the game.
@@ -403,33 +536,47 @@ Game.prototype = {
       this.keepPlaying = false;
       this.paused = true;
 
-      // Let us know the game has ended.
-      console.log("Game over!");
+      // Stop the music.
+      this.sound.stop();
 
-      // TODO: Display game over message and add menu to restart game.
+      // Let us know the game has ended.
+      this.showGameOverMenu();
     }
+  },
+
+  // Set the board type.
+  setBoard: function(boardType = 0) {
+    this.boardType = boardType;
+    this.board.setBoard(this.boardType);
   },
 
   // Pause or unpause the game.
   togglePause: function() {
-    // Play or pause the game based on the paused flag.
-    if (this.paused) {
-      // Toggle the flag.
-      this.paused = false;
+    // Pause shouldn't function unless the game is actually running.
+    if (this.keepPlaying) {
+      // Play or pause the game based on the paused flag.
+      if (this.paused) {
+        // Toggle the flag.
+        this.paused = false;
 
-      // If the music is supposed to be playing, play it.
-      if (this.playMusic) {
-        this.sound.play();
+        // If the music is supposed to be playing, play it.
+        if (this.playMusic) {
+          this.sound.play();
+        }
+
+        // Remove the overlay.
+        this.hideOverlay();
+      } else {
+        // Toggle the flag.
+        this.paused = true;
+
+        // Pause the music.
+        this.sound.pause();
+
+        // Let us know the game is paused.
+        this.showPauseMenu();
       }
-    } else {
-      // Toggle the flag.
-      this.paused = true;
-
-      // Pause the music.
-      this.sound.pause();
     }
-
-    // TODO: Display paused message on the screen.
   },
 
   // Play or pause the music.
@@ -457,7 +604,7 @@ Game.prototype = {
     if (this.debugMode) {
       this.debugMode = false;
 
-      this.board.setBoard(DEFAULT_BOARD);
+      this.board.setBoard(this.boardType);
     } else {
       this.debugMode = true;
 
@@ -465,8 +612,10 @@ Game.prototype = {
     }
 
     // We're starting over, so restart the game.
-    this.endGame();
-    this.startGame();
+    if (this.keepPlaying) {
+      this.endGame();
+      this.startGame();
+    }
   },
 
   // Increment the level counter. If the counter reaches 3,

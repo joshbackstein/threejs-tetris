@@ -11,6 +11,44 @@ canvas {
   width: 100%;
 }
 
+.hidden {
+  display: none;
+}
+
+.button {
+  background: rgba(211, 211, 211, 0.75);
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.button:hover {
+  background: rgba(211, 211, 211, 1);
+}
+
+.style-select {
+  background: rgba(238, 238, 238, 0.75);
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  display: inline-block;
+  overflow: hidden;
+  width: 120px;
+}
+
+.style-select select {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-size: 12pt;
+  padding: 5px 8px;
+  width: 100%;
+}
+
+.style-select select:focus {
+  outline: none;
+}
+
 #ui {
   height: 100%;
   left: 0px;
@@ -57,7 +95,29 @@ canvas {
   text-align: center;
 }
 
-#ui #game-info p:hover {
-  color: #333;
-  cursor: pointer;
+#ui #game-info p {
+  font-size: 12pt;
+  margin-top: 2em;
+}
+
+#ui #overlay {
+  background: rgba(64, 64, 64, 0.75);
+  border-radius: 5px;
+  box-sizing: border-box;
+  left: 50%;
+  padding: 1em;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -75%);
+  width: 36em;
+}
+
+#ui #overlay #overlay-board-selector {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+#ui #overlay #overlay-board-selector #overlay-play-button {
+  margin-top: 2em;
 }
