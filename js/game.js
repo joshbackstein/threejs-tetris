@@ -174,10 +174,7 @@ Game.prototype = {
             thisGame.rotateCamera(ROTATION_AMOUNT);
           }
         }
-        // TODO: Remove this.
         if (e.key == "Escape") {
-          // Kill the game.
-          thisGame.board.clear();
           thisGame.endGame();
         }
       });
