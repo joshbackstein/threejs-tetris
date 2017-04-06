@@ -412,8 +412,22 @@ Game.prototype = {
 
   // Pause or unpause the game.
   togglePause: function() {
-    // Toggle the pause flag.
-    this.paused = !this.paused;
+    // Play or pause the game based on the paused flag.
+    if (this.paused) {
+      // Toggle the flag.
+      this.paused = false;
+
+      // If the music is supposed to be playing, play it.
+      if (this.playMusic) {
+        this.sound.play();
+      }
+    } else {
+      // Toggle the flag.
+      this.paused = true;
+
+      // Pause the music.
+      this.sound.pause();
+    }
 
     // TODO: Display paused message on the screen.
   },
@@ -431,8 +445,10 @@ Game.prototype = {
       // Toggle the flag.
       this.playMusic = true;
 
-      // Play the music.
-      this.sound.play();
+      // Play the music if the game isn't paused.
+      if (!this.paused) {
+        this.sound.play();
+      }
     }
   },
 
