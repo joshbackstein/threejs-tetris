@@ -490,6 +490,16 @@ Game.prototype = {
     this.showBoardSelectorOverlay();
   },
 
+  // Update the level label.
+  updateLevelLabel: function() {
+    this.levelLabel.innerHTML = "Level " + (this.level + 1);
+  },
+
+  // Update the points label.
+  updatePointsLabel: function() {
+    this.pointsLabel.innerHTML = "Points: " + this.score;
+  },
+
   // Run the game.
   run: function() {
     // If the game isn't initialized yet, initialize it.
@@ -513,6 +523,10 @@ Game.prototype = {
     this.speedModifier = 1;
     this.sound.setPlaybackRate(1);
     this.board.reset();
+
+    // Update the level and points labels.
+    this.updateLevelLabel();
+    this.updatePointsLabel();
 
     // Play the music if it is supposed to be playing.
     if (this.playMusic) {
@@ -543,8 +557,12 @@ Game.prototype = {
 
   // Set the board type.
   setBoard: function(boardType = 0) {
-    this.boardType = boardType;
-    this.board.setBoard(this.boardType);
+      this.boardType = boardType;
+    if (!this.debugMode) {
+      this.board.setBoard(this.boardType);
+    } else {
+      this.board.setBoard(3);
+    }
   },
 
   // Pause or unpause the game.
@@ -613,6 +631,10 @@ Game.prototype = {
       this.endGame();
       this.startGame();
     }
+
+    // Update the level and points labels.
+    this.updateLevelLabel();
+    this.updatePointsLabel();
   },
 
   // Increment the level counter. If the counter reaches 3,
@@ -658,8 +680,8 @@ Game.prototype = {
     console.log("Sound Playback Rate:", this.sound.playbackRate);
 
     // Update the level and points labels.
-    this.levelLabel.innerHTML = "Level " + (this.level + 1);
-    this.pointsLabel.innerHTML = "Points: " + this.score;
+    this.updateLevelLabel();
+    this.updatePointsLabel();
   },
 
   // This is the game/animation loop
