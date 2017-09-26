@@ -80,3 +80,13 @@
   * ~~Rotate camera counterclockwise around board~~
   * ~~Adjust controls depending on the camera angle~~
   * ~~Toggle Canadian mode~~
+
+## Sources
+
+### Music
+
+[The Mod Archive](https://modarchive.org/index.php?request=view_by_moduleid&query=178266 "The Mod Archive")
+
+### Canadian Flag
+
+[Country Flags.com](https://www.countryflags.com/en/canada-flag-vector.html "Country Flags.com")
