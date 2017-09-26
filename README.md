@@ -2,6 +2,10 @@
 
 A 3D Tetris clone using the three.js library
 
+## Screenshot
+
+![Screenshot of 3D Tetris Clone](https://raw.githubusercontent.com/joshbackstein/threejs-tetris/master/readme-files/screenshot.png)
+
 ## Usage
 
 ### Controls
