@@ -1,5 +1,24 @@
 # Tetris
 
+## Usage
+
+### Controls
+
+| Key            | Action                                        |
+| :------------: | :-------------------------------------------: |
+| `Up`/`Down`    | Move block along X-axis                       |
+| `K`/`J`        | Move block along X-axis                       |
+| `Left`/`Right` | Move block along Z-axis                       |
+| `H`/`L`        | Move block along Z-axis                       |
+| `Space`        | Increase drop speed                           |
+| `S`, `D`, `F`  | Rotate block about X-axis, Y-axis, and Z-axis |
+| `Q`            | Pause the game                                |
+| `Escape`       | Quit the game                                 |
+| `W`            | Toggle music                                  |
+| `E`            | Rotate camera clockwise around board          |
+| `R`            | Rotate camera counterclockwise around board   |
+| `C`            | Toggle Canadian mode                          |
+
 ## Current Progress
 
 ### Key:
@@ -61,22 +80,3 @@
   * ~~Rotate camera counterclockwise around board~~
   * ~~Adjust controls depending on the camera angle~~
   * ~~Toggle Canadian mode~~
-
-## Usage
-
-### Controls
-
-| Key            | Action                                        |
-| :------------: | :-------------------------------------------: |
-| `Up`/`Down`    | Move block along X-axis                       |
-| `K`/`J`        | Move block along X-axis                       |
-| `Left`/`Right` | Move block along Z-axis                       |
-| `H`/`L`        | Move block along Z-axis                       |
-| `Space`        | Increase drop speed                           |
-| `S`, `D`, `F`  | Rotate block about X-axis, Y-axis, and Z-axis |
-| `Q`            | Pause the game                                |
-| `Escape`       | Quit the game                                 |
-| `W`            | Toggle music                                  |
-| `E`            | Rotate camera clockwise around board          |
-| `R`            | Rotate camera counterclockwise around board   |
-| `C`            | Toggle Canadian mode                          |
