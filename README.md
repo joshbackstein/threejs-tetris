@@ -1,4 +1,6 @@
-# Tetris
+# Three.js Tetris
+
+A 3D Tetris clone using the three.js library
 
 ## Usage
 
